@@ -1,0 +1,57 @@
+{
+  "resource_pack_name": "golemgun",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "golemgun_copper_wand": {
+      "textures": "textures/items/golemgun/copper_wand"
+    },
+    "golemgun_obsidian_wand": {
+      "textures": "textures/items/golemgun/obsidian_wand"
+    },
+    "golemgun_gold_wand": {
+      "textures": "textures/items/golemgun/gold_wand"
+    },
+    "golemgun_quartz_wand": {
+      "textures": "textures/items/golemgun/quartz_wand"
+    },
+    "golemgun_emerald_wand": {
+      "textures": "textures/items/golemgun/emerald_wand"
+    },
+    "golemgun_diamond_wand": {
+      "textures": "textures/items/golemgun/diamond_wand"
+    },
+    "golemgun_lapis_wand": {
+      "textures": "textures/items/golemgun/lapis_wand"
+    },
+    "golemgun_wood_wand": {
+      "textures": "textures/items/golemgun/wood_wand"
+    },
+    "golemgun_coal_wand": {
+      "textures": "textures/items/golemgun/coal_wand"
+    },
+    "golemgun_stone_wand": {
+      "textures": "textures/items/golemgun/stone_wand"
+    },
+    "golemgun_iron_wand": {
+      "textures": "textures/items/golemgun/iron_wand"
+    },
+    "golemgun_netherite_wand": {
+      "textures": "textures/items/golemgun/netherite_wand"
+    },
+    "golemgun_slime_wand": {
+      "textures": "textures/items/golemgun/slime_wand"
+    },
+    "golemgun_tnt_wand": {
+      "textures": "textures/items/golemgun/tnt_wand"
+    },
+    "golemgun_honey_wand": {
+      "textures": "textures/items/golemgun/honey_wand"
+    },
+    "golemgun_golem_rod": {
+      "textures": "textures/items/golemgun/golem_rod"
+    },
+    "golemgun_debug_wand": {
+      "textures": "textures/items/golemgun/debug_wand"
+    }
+  }
+}

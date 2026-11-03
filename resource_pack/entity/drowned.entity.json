@@ -1,0 +1,123 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "golemgun:drowned",
+      "min_engine_version": "1.16.0",
+      "materials": {
+        "default": "drowned"
+      },
+      "textures": {
+        "copper": "textures/entity/golemgun/drowned_copper",
+        "baby_copper": "textures/entity/golemgun/drowned_baby_copper",
+        "obsidian": "textures/entity/golemgun/drowned_obsidian",
+        "baby_obsidian": "textures/entity/golemgun/drowned_baby_obsidian",
+        "gold": "textures/entity/golemgun/drowned_gold",
+        "baby_gold": "textures/entity/golemgun/drowned_baby_gold",
+        "quartz": "textures/entity/golemgun/drowned_quartz",
+        "baby_quartz": "textures/entity/golemgun/drowned_baby_quartz",
+        "emerald": "textures/entity/golemgun/drowned_emerald",
+        "baby_emerald": "textures/entity/golemgun/drowned_baby_emerald",
+        "diamond": "textures/entity/golemgun/drowned_diamond",
+        "baby_diamond": "textures/entity/golemgun/drowned_baby_diamond",
+        "lapis": "textures/entity/golemgun/drowned_lapis",
+        "baby_lapis": "textures/entity/golemgun/drowned_baby_lapis",
+        "wood": "textures/entity/golemgun/drowned_wood",
+        "baby_wood": "textures/entity/golemgun/drowned_baby_wood",
+        "coal": "textures/entity/golemgun/drowned_coal",
+        "baby_coal": "textures/entity/golemgun/drowned_baby_coal",
+        "stone": "textures/entity/golemgun/drowned_stone",
+        "baby_stone": "textures/entity/golemgun/drowned_baby_stone",
+        "iron": "textures/entity/golemgun/drowned_iron",
+        "baby_iron": "textures/entity/golemgun/drowned_baby_iron",
+        "netherite": "textures/entity/golemgun/drowned_netherite",
+        "baby_netherite": "textures/entity/golemgun/drowned_baby_netherite",
+        "slime": "textures/entity/golemgun/drowned_slime",
+        "baby_slime": "textures/entity/golemgun/drowned_baby_slime",
+        "tnt": "textures/entity/golemgun/drowned_tnt",
+        "baby_tnt": "textures/entity/golemgun/drowned_baby_tnt",
+        "honey": "textures/entity/golemgun/drowned_honey",
+        "baby_honey": "textures/entity/golemgun/drowned_baby_honey"
+      },
+      "geometry": {
+        "default": "geometry.zombie.drowned.v1.16",
+        "baby": "geometry.zombie.baby"
+      },
+      "scripts": {
+        "scale": "query.is_baby ? 2.0 : 1.0",
+        "variables": {
+          "variable.use_dedicated_baby_armor": "public"
+        },
+        "pre_animation": [
+          "v.use_dedicated_baby_armor = true;",
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed / variable.gliding_speed_value) * 57.3;",
+          "variable.riding_y_offset_baby_scaling = query.is_baby ? -0.5 : 0.0;",
+          "variable.riding_y_offset_with_respect_to_player = 1.0;",
+          "variable.riding_y_offset_on_vehicle_where_other_entites_can_stand = query.is_riding_any_entity_of_type('minecraft:minecart', 'minecraft:boat', 'minecraft:chest_boat') ? -3.0 : 0.0;",
+          "variable.unscaled_riding_y_offset = variable.riding_y_offset_with_respect_to_player + variable.riding_y_offset_on_vehicle_where_other_entites_can_stand;",
+          "variable.riding_y_offset = variable.riding_y_offset_baby_scaling * math.abs(variable.unscaled_riding_y_offset) + variable.unscaled_riding_y_offset + variable.riding_y_offset_baby_scaling * 0.2f;",
+          "t.m = query.property('golemgun:material');",
+          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+        ],
+        "animate": [
+          "look_at_target",
+          "move",
+          {
+            "riding.body": "query.is_riding"
+          },
+          {
+            "riding.arms": "query.is_riding"
+          },
+          {
+            "riding.legs": "query.is_riding"
+          },
+          "holding",
+          {
+            "charging": "query.is_charging"
+          },
+          "attack_controller",
+          {
+            "brandish_spear": "variable.is_brandishing_spear"
+          },
+          "bob",
+          {
+            "damage_nearby_mobs": "variable.damage_nearby_mobs"
+          },
+          {
+            "use_item_progress": "( variable.use_item_interval_progress > 0.0 ) || ( variable.use_item_startup_progress > 0.0 )"
+          },
+          {
+            "swimming": "variable.swim_amount > 0.0"
+          }
+        ],
+        "should_update_effects_offscreen": "1.0"
+      },
+      "animations": {
+        "look_at_target": "controller.animation.humanoid.look_at_target",
+        "look_at_target_default": "animation.humanoid.look_at_target.default",
+        "look_at_target_gliding": "animation.humanoid.look_at_target.gliding",
+        "look_at_target_swimming": "animation.humanoid.look_at_target.swimming",
+        "move": "animation.humanoid.move",
+        "riding.body": "animation.humanoid.riding.body",
+        "riding.arms": "animation.humanoid.riding.arms",
+        "riding.legs": "animation.humanoid.riding.legs",
+        "holding": "animation.humanoid.holding",
+        "brandish_spear": "animation.humanoid.brandish_spear",
+        "charging": "animation.humanoid.charging",
+        "bob": "animation.humanoid.bob",
+        "damage_nearby_mobs": "animation.humanoid.damage_nearby_mobs",
+        "use_item_progress": "animation.humanoid.use_item_progress",
+        "attack_controller": "controller.animation.drowned.attack.rotations",
+        "zombie_attack_bare_hand": "animation.zombie.attack_bare_hand",
+        "baby_zombie_attack_bare_hand": "animation.zombie.baby_attack_bare_hand",
+        "attack_rotations": "animation.drowned.attack.rotations",
+        "baby_attack_rotations": "animation.drowned.attack.baby_rotations",
+        "swimming": "animation.zombie.swimming"
+      },
+      "render_controllers": [
+        "controller.render.golemgun.drowned"
+      ],
+      "enable_attachables": true
+    }
+  }
+}

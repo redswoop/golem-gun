@@ -1,0 +1,32 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "golemgun:stone_wand"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      " M ",
+      "MWM",
+      " M "
+    ],
+    "key": {
+      "M": {
+        "tag": "minecraft:stone_tool_materials"
+      },
+      "W": {
+        "item": "golemgun:wood_wand"
+      }
+    },
+    "unlock": [
+      {
+        "tag": "minecraft:stone_tool_materials"
+      }
+    ],
+    "result": {
+      "item": "golemgun:stone_wand"
+    }
+  }
+}

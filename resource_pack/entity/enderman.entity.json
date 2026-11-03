@@ -1,0 +1,78 @@
+{
+  "format_version": "1.8.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "golemgun:enderman",
+      "min_engine_version": "1.8.0",
+      "materials": {
+        "default": "enderman",
+        "invisible": "enderman_invisible"
+      },
+      "textures": {
+        "copper": "textures/entity/golemgun/enderman_copper",
+        "obsidian": "textures/entity/golemgun/enderman_obsidian",
+        "gold": "textures/entity/golemgun/enderman_gold",
+        "quartz": "textures/entity/golemgun/enderman_quartz",
+        "emerald": "textures/entity/golemgun/enderman_emerald",
+        "diamond": "textures/entity/golemgun/enderman_diamond",
+        "lapis": "textures/entity/golemgun/enderman_lapis",
+        "wood": "textures/entity/golemgun/enderman_wood",
+        "coal": "textures/entity/golemgun/enderman_coal",
+        "stone": "textures/entity/golemgun/enderman_stone",
+        "iron": "textures/entity/golemgun/enderman_iron",
+        "netherite": "textures/entity/golemgun/enderman_netherite",
+        "slime": "textures/entity/golemgun/enderman_slime",
+        "tnt": "textures/entity/golemgun/enderman_tnt",
+        "honey": "textures/entity/golemgun/enderman_honey"
+      },
+      "geometry": {
+        "default": "geometry.enderman.v1.8"
+      },
+      "scripts": {
+        "pre_animation": [
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed / variable.gliding_speed_value) * 28.65;",
+          "t.m = query.property('golemgun:material');",
+          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+        ]
+      },
+      "animations": {
+        "look_at_target_default": "animation.humanoid.look_at_target.default",
+        "look_at_target_gliding": "animation.humanoid.look_at_target.gliding",
+        "look_at_target_swimming": "animation.humanoid.look_at_target.swimming",
+        "move": "animation.humanoid.move",
+        "attack.rotations": "animation.humanoid.attack.rotations",
+        "bob": "animation.humanoid.bob",
+        "base_pose": "animation.enderman.base_pose",
+        "arms_legs": "animation.enderman.arms_legs",
+        "carrying": "animation.enderman.carrying",
+        "scary_face": "animation.enderman.scary_face"
+      },
+      "animation_controllers": [
+        {
+          "look_at_target": "controller.animation.humanoid.look_at_target"
+        },
+        {
+          "move": "controller.animation.humanoid.move"
+        },
+        {
+          "attack": "controller.animation.humanoid.attack"
+        },
+        {
+          "bob": "controller.animation.humanoid.bob"
+        },
+        {
+          "base_pose": "controller.animation.enderman.base_pose"
+        },
+        {
+          "carrying": "controller.animation.enderman.carrying"
+        },
+        {
+          "scary_face": "controller.animation.enderman.scary_face"
+        }
+      ],
+      "render_controllers": [
+        "controller.render.golemgun.enderman"
+      ]
+    }
+  }
+}

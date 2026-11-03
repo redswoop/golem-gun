@@ -1,0 +1,8 @@
+{
+  "name": "golem-gun",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --import ./test/hooks.mjs test/convert.test.mjs"
+  }
+}

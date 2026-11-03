@@ -1,0 +1,32 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "golemgun:tnt_wand"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      " M ",
+      "MWM",
+      " M "
+    ],
+    "key": {
+      "M": {
+        "item": "minecraft:tnt"
+      },
+      "W": {
+        "item": "golemgun:wood_wand"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:tnt"
+      }
+    ],
+    "result": {
+      "item": "golemgun:tnt_wand"
+    }
+  }
+}

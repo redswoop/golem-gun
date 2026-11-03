@@ -1,0 +1,53 @@
+{
+  "format_version": "1.8.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "golemgun:cave_spider",
+      "min_engine_version": "1.8.0",
+      "materials": {
+        "default": "spider",
+        "invisible": "spider_invisible"
+      },
+      "textures": {
+        "copper": "textures/entity/golemgun/cave_spider_copper",
+        "obsidian": "textures/entity/golemgun/cave_spider_obsidian",
+        "gold": "textures/entity/golemgun/cave_spider_gold",
+        "quartz": "textures/entity/golemgun/cave_spider_quartz",
+        "emerald": "textures/entity/golemgun/cave_spider_emerald",
+        "diamond": "textures/entity/golemgun/cave_spider_diamond",
+        "lapis": "textures/entity/golemgun/cave_spider_lapis",
+        "wood": "textures/entity/golemgun/cave_spider_wood",
+        "coal": "textures/entity/golemgun/cave_spider_coal",
+        "stone": "textures/entity/golemgun/cave_spider_stone",
+        "iron": "textures/entity/golemgun/cave_spider_iron",
+        "netherite": "textures/entity/golemgun/cave_spider_netherite",
+        "slime": "textures/entity/golemgun/cave_spider_slime",
+        "tnt": "textures/entity/golemgun/cave_spider_tnt",
+        "honey": "textures/entity/golemgun/cave_spider_honey"
+      },
+      "geometry": {
+        "default": "geometry.spider.v1.8"
+      },
+      "scripts": {
+        "scale": "0.7",
+        "pre_animation": [
+          "t.m = query.property('golemgun:material');",
+          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+        ]
+      },
+      "animations": {
+        "default_leg_pose": "animation.spider.default_leg_pose",
+        "look_at_target": "animation.spider.look_at_target",
+        "walk": "animation.spider.walk"
+      },
+      "animation_controllers": [
+        {
+          "move": "controller.animation.spider.move"
+        }
+      ],
+      "render_controllers": [
+        "controller.render.golemgun.cave_spider"
+      ]
+    }
+  }
+}

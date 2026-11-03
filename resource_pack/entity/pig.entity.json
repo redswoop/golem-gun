@@ -1,0 +1,72 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "golemgun:pig",
+      "min_engine_version": "1.8.0",
+      "materials": {
+        "default": "pig_v3"
+      },
+      "textures": {
+        "saddle": "textures/entity/saddle_v2",
+        "copper": "textures/entity/golemgun/pig_copper",
+        "baby_copper": "textures/entity/golemgun/pig_baby_copper",
+        "obsidian": "textures/entity/golemgun/pig_obsidian",
+        "baby_obsidian": "textures/entity/golemgun/pig_baby_obsidian",
+        "gold": "textures/entity/golemgun/pig_gold",
+        "baby_gold": "textures/entity/golemgun/pig_baby_gold",
+        "quartz": "textures/entity/golemgun/pig_quartz",
+        "baby_quartz": "textures/entity/golemgun/pig_baby_quartz",
+        "emerald": "textures/entity/golemgun/pig_emerald",
+        "baby_emerald": "textures/entity/golemgun/pig_baby_emerald",
+        "diamond": "textures/entity/golemgun/pig_diamond",
+        "baby_diamond": "textures/entity/golemgun/pig_baby_diamond",
+        "lapis": "textures/entity/golemgun/pig_lapis",
+        "baby_lapis": "textures/entity/golemgun/pig_baby_lapis",
+        "wood": "textures/entity/golemgun/pig_wood",
+        "baby_wood": "textures/entity/golemgun/pig_baby_wood",
+        "coal": "textures/entity/golemgun/pig_coal",
+        "baby_coal": "textures/entity/golemgun/pig_baby_coal",
+        "stone": "textures/entity/golemgun/pig_stone",
+        "baby_stone": "textures/entity/golemgun/pig_baby_stone",
+        "iron": "textures/entity/golemgun/pig_iron",
+        "baby_iron": "textures/entity/golemgun/pig_baby_iron",
+        "netherite": "textures/entity/golemgun/pig_netherite",
+        "baby_netherite": "textures/entity/golemgun/pig_baby_netherite",
+        "slime": "textures/entity/golemgun/pig_slime",
+        "baby_slime": "textures/entity/golemgun/pig_baby_slime",
+        "tnt": "textures/entity/golemgun/pig_tnt",
+        "baby_tnt": "textures/entity/golemgun/pig_baby_tnt",
+        "honey": "textures/entity/golemgun/pig_honey",
+        "baby_honey": "textures/entity/golemgun/pig_baby_honey"
+      },
+      "geometry": {
+        "default": "geometry.pig.v3",
+        "baby": "geometry.pig.baby"
+      },
+      "animations": {
+        "setup": "animation.pig.setup",
+        "walk": "animation.quadruped.walk",
+        "look_at_target": "animation.common.look_at_target"
+      },
+      "scripts": {
+        "scale": "query.is_baby ? 2.0 : 1.0",
+        "pre_animation": [
+          "t.m = query.property('golemgun:material');",
+          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+        ],
+        "animate": [
+          "setup",
+          {
+            "walk": "query.modified_move_speed"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.saddle",
+        "controller.render.golemgun.pig"
+      ]
+    }
+  }
+}

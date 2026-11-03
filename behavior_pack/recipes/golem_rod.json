@@ -1,0 +1,35 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "golemgun:golem_rod"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      " C ",
+      "IWI",
+      " I "
+    ],
+    "key": {
+      "C": {
+        "item": "minecraft:carved_pumpkin"
+      },
+      "I": {
+        "item": "minecraft:iron_block"
+      },
+      "W": {
+        "item": "golemgun:wood_wand"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:iron_block"
+      }
+    ],
+    "result": {
+      "item": "golemgun:golem_rod"
+    }
+  }
+}

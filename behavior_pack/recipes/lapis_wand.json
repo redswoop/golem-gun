@@ -1,0 +1,32 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "golemgun:lapis_wand"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      " M ",
+      "MWM",
+      " M "
+    ],
+    "key": {
+      "M": {
+        "item": "minecraft:lapis_lazuli"
+      },
+      "W": {
+        "item": "golemgun:wood_wand"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:lapis_lazuli"
+      }
+    ],
+    "result": {
+      "item": "golemgun:lapis_wand"
+    }
+  }
+}

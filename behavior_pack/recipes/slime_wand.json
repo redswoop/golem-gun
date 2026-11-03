@@ -1,0 +1,32 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "golemgun:slime_wand"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      " M ",
+      "MWM",
+      " M "
+    ],
+    "key": {
+      "M": {
+        "item": "minecraft:slime_ball"
+      },
+      "W": {
+        "item": "golemgun:wood_wand"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:slime_ball"
+      }
+    ],
+    "result": {
+      "item": "golemgun:slime_wand"
+    }
+  }
+}

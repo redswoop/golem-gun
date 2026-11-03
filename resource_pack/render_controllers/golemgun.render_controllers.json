@@ -1,0 +1,1385 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.golemgun.cow": {
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      },
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ]
+    },
+    "controller.render.golemgun.chicken": {
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      },
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        },
+        {
+          "leg*": "Material.legs"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ]
+    },
+    "controller.render.golemgun.sheep": {
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        },
+        "geometries": {
+          "Array.geos": [
+            "Geometry.default",
+            "Geometry.sheared"
+          ]
+        }
+      },
+      "geometry": "query.is_baby ? Geometry.baby : Array.geos[query.is_sheared]",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ]
+    },
+    "controller.render.golemgun.pig": {
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      },
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ]
+    },
+    "controller.render.golemgun.fox": {
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      },
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "part_visibility": [
+        {
+          "leg*": "!query.is_sleeping"
+        },
+        {
+          "head": "(!query.is_sleeping && !query.is_baby) || query.is_baby"
+        },
+        {
+          "head_sleeping": "query.is_sleeping && !query.is_baby"
+        }
+      ],
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ]
+    },
+    "controller.render.golemgun.wolf": {
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      },
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ]
+    },
+    "controller.render.golemgun.zombie": {
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.husk": {
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.drowned": {
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.skeleton": {
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.stray": {
+      "rebuild_animation_matrices": true,
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.bogged": {
+      "rebuild_animation_matrices": true,
+      "geometry": "Geometry.default",
+      "part_visibility": [
+        {
+          "mushrooms": "!query.is_sheared"
+        }
+      ],
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.creeper": {
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ],
+      "overlay_color": {
+        "r": "((variable.flash == 0.0) || (query.swelling_dir < 0.0)) ? this : 1.0",
+        "g": "((variable.flash == 0.0) || (query.swelling_dir < 0.0)) ? this : 1.0",
+        "b": "((variable.flash == 0.0) || (query.swelling_dir < 0.0)) ? this : 1.0",
+        "a": "((variable.flash == 0.0) || (query.swelling_dir < 0.0)) ? this : 0.5"
+      },
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.spider": {
+      "arrays": {
+        "materials": {
+          "Array.materials": [
+            "Material.default",
+            "Material.invisible"
+          ]
+        },
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Array.materials[query.is_invisible]"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ]
+    },
+    "controller.render.golemgun.cave_spider": {
+      "arrays": {
+        "materials": {
+          "Array.materials": [
+            "Material.default",
+            "Material.invisible"
+          ]
+        },
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Array.materials[query.is_invisible]"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ]
+    },
+    "controller.render.golemgun.enderman": {
+      "arrays": {
+        "materials": {
+          "Array.materials": [
+            "Material.default",
+            "Material.invisible"
+          ]
+        },
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Array.materials[query.is_invisible]"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ]
+    },
+    "controller.render.golemgun.witch": {
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.pillager": {
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.vindicator": {
+      "geometry": "Geometry.default",
+      "part_visibility": [
+        {
+          "rightArm": "query.is_angry || query.is_celebrating"
+        },
+        {
+          "leftArm": "query.is_angry || query.is_celebrating"
+        },
+        {
+          "rightItem": "query.is_angry"
+        },
+        {
+          "arms": "!(query.is_angry || query.is_celebrating)"
+        }
+      ],
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.piglin": {
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.zombie_pigman": {
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Array.baby[v.index] : Array.adult[v.index]"
+      ],
+      "arrays": {
+        "textures": {
+          "Array.adult": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ],
+          "Array.baby": [
+            "Texture.baby_copper",
+            "Texture.baby_obsidian",
+            "Texture.baby_gold",
+            "Texture.baby_quartz",
+            "Texture.baby_emerald",
+            "Texture.baby_diamond",
+            "Texture.baby_lapis",
+            "Texture.baby_wood",
+            "Texture.baby_coal",
+            "Texture.baby_stone",
+            "Texture.baby_iron",
+            "Texture.baby_netherite",
+            "Texture.baby_slime",
+            "Texture.baby_tnt",
+            "Texture.baby_honey"
+          ]
+        }
+      }
+    },
+    "controller.render.golemgun.iron_golem": {
+      "arrays": {
+        "textures": {
+          "Array.skins": [
+            "Texture.copper",
+            "Texture.obsidian",
+            "Texture.gold",
+            "Texture.quartz",
+            "Texture.emerald",
+            "Texture.diamond",
+            "Texture.lapis",
+            "Texture.wood",
+            "Texture.coal",
+            "Texture.stone",
+            "Texture.iron",
+            "Texture.netherite",
+            "Texture.slime",
+            "Texture.tnt",
+            "Texture.honey"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.skins[v.index]"
+      ]
+    },
+    "controller.render.golemgun.head_golem": {
+      "arrays": {
+        "geometries": {
+          "Array.geos": [
+            "Geometry.cow",
+            "Geometry.chicken",
+            "Geometry.sheep",
+            "Geometry.pig",
+            "Geometry.fox",
+            "Geometry.wolf",
+            "Geometry.zombie",
+            "Geometry.husk",
+            "Geometry.drowned",
+            "Geometry.skeleton",
+            "Geometry.stray",
+            "Geometry.bogged",
+            "Geometry.creeper",
+            "Geometry.spider",
+            "Geometry.cave_spider",
+            "Geometry.enderman",
+            "Geometry.witch",
+            "Geometry.pillager",
+            "Geometry.vindicator",
+            "Geometry.piglin",
+            "Geometry.zombie_pigman"
+          ]
+        },
+        "textures": {
+          "Array.skins": [
+            "Texture.cow_iron",
+            "Texture.cow_copper",
+            "Texture.cow_obsidian",
+            "Texture.cow_gold",
+            "Texture.cow_quartz",
+            "Texture.cow_emerald",
+            "Texture.cow_diamond",
+            "Texture.cow_lapis",
+            "Texture.cow_wood",
+            "Texture.cow_coal",
+            "Texture.cow_stone",
+            "Texture.cow_iron_painted",
+            "Texture.cow_netherite",
+            "Texture.cow_slime",
+            "Texture.cow_tnt",
+            "Texture.cow_honey",
+            "Texture.chicken_iron",
+            "Texture.chicken_copper",
+            "Texture.chicken_obsidian",
+            "Texture.chicken_gold",
+            "Texture.chicken_quartz",
+            "Texture.chicken_emerald",
+            "Texture.chicken_diamond",
+            "Texture.chicken_lapis",
+            "Texture.chicken_wood",
+            "Texture.chicken_coal",
+            "Texture.chicken_stone",
+            "Texture.chicken_iron_painted",
+            "Texture.chicken_netherite",
+            "Texture.chicken_slime",
+            "Texture.chicken_tnt",
+            "Texture.chicken_honey",
+            "Texture.sheep_iron",
+            "Texture.sheep_copper",
+            "Texture.sheep_obsidian",
+            "Texture.sheep_gold",
+            "Texture.sheep_quartz",
+            "Texture.sheep_emerald",
+            "Texture.sheep_diamond",
+            "Texture.sheep_lapis",
+            "Texture.sheep_wood",
+            "Texture.sheep_coal",
+            "Texture.sheep_stone",
+            "Texture.sheep_iron_painted",
+            "Texture.sheep_netherite",
+            "Texture.sheep_slime",
+            "Texture.sheep_tnt",
+            "Texture.sheep_honey",
+            "Texture.pig_iron",
+            "Texture.pig_copper",
+            "Texture.pig_obsidian",
+            "Texture.pig_gold",
+            "Texture.pig_quartz",
+            "Texture.pig_emerald",
+            "Texture.pig_diamond",
+            "Texture.pig_lapis",
+            "Texture.pig_wood",
+            "Texture.pig_coal",
+            "Texture.pig_stone",
+            "Texture.pig_iron_painted",
+            "Texture.pig_netherite",
+            "Texture.pig_slime",
+            "Texture.pig_tnt",
+            "Texture.pig_honey",
+            "Texture.fox_iron",
+            "Texture.fox_copper",
+            "Texture.fox_obsidian",
+            "Texture.fox_gold",
+            "Texture.fox_quartz",
+            "Texture.fox_emerald",
+            "Texture.fox_diamond",
+            "Texture.fox_lapis",
+            "Texture.fox_wood",
+            "Texture.fox_coal",
+            "Texture.fox_stone",
+            "Texture.fox_iron_painted",
+            "Texture.fox_netherite",
+            "Texture.fox_slime",
+            "Texture.fox_tnt",
+            "Texture.fox_honey",
+            "Texture.wolf_iron",
+            "Texture.wolf_copper",
+            "Texture.wolf_obsidian",
+            "Texture.wolf_gold",
+            "Texture.wolf_quartz",
+            "Texture.wolf_emerald",
+            "Texture.wolf_diamond",
+            "Texture.wolf_lapis",
+            "Texture.wolf_wood",
+            "Texture.wolf_coal",
+            "Texture.wolf_stone",
+            "Texture.wolf_iron_painted",
+            "Texture.wolf_netherite",
+            "Texture.wolf_slime",
+            "Texture.wolf_tnt",
+            "Texture.wolf_honey",
+            "Texture.zombie_iron",
+            "Texture.zombie_copper",
+            "Texture.zombie_obsidian",
+            "Texture.zombie_gold",
+            "Texture.zombie_quartz",
+            "Texture.zombie_emerald",
+            "Texture.zombie_diamond",
+            "Texture.zombie_lapis",
+            "Texture.zombie_wood",
+            "Texture.zombie_coal",
+            "Texture.zombie_stone",
+            "Texture.zombie_iron_painted",
+            "Texture.zombie_netherite",
+            "Texture.zombie_slime",
+            "Texture.zombie_tnt",
+            "Texture.zombie_honey",
+            "Texture.husk_iron",
+            "Texture.husk_copper",
+            "Texture.husk_obsidian",
+            "Texture.husk_gold",
+            "Texture.husk_quartz",
+            "Texture.husk_emerald",
+            "Texture.husk_diamond",
+            "Texture.husk_lapis",
+            "Texture.husk_wood",
+            "Texture.husk_coal",
+            "Texture.husk_stone",
+            "Texture.husk_iron_painted",
+            "Texture.husk_netherite",
+            "Texture.husk_slime",
+            "Texture.husk_tnt",
+            "Texture.husk_honey",
+            "Texture.drowned_iron",
+            "Texture.drowned_copper",
+            "Texture.drowned_obsidian",
+            "Texture.drowned_gold",
+            "Texture.drowned_quartz",
+            "Texture.drowned_emerald",
+            "Texture.drowned_diamond",
+            "Texture.drowned_lapis",
+            "Texture.drowned_wood",
+            "Texture.drowned_coal",
+            "Texture.drowned_stone",
+            "Texture.drowned_iron_painted",
+            "Texture.drowned_netherite",
+            "Texture.drowned_slime",
+            "Texture.drowned_tnt",
+            "Texture.drowned_honey",
+            "Texture.skeleton_iron",
+            "Texture.skeleton_copper",
+            "Texture.skeleton_obsidian",
+            "Texture.skeleton_gold",
+            "Texture.skeleton_quartz",
+            "Texture.skeleton_emerald",
+            "Texture.skeleton_diamond",
+            "Texture.skeleton_lapis",
+            "Texture.skeleton_wood",
+            "Texture.skeleton_coal",
+            "Texture.skeleton_stone",
+            "Texture.skeleton_iron_painted",
+            "Texture.skeleton_netherite",
+            "Texture.skeleton_slime",
+            "Texture.skeleton_tnt",
+            "Texture.skeleton_honey",
+            "Texture.stray_iron",
+            "Texture.stray_copper",
+            "Texture.stray_obsidian",
+            "Texture.stray_gold",
+            "Texture.stray_quartz",
+            "Texture.stray_emerald",
+            "Texture.stray_diamond",
+            "Texture.stray_lapis",
+            "Texture.stray_wood",
+            "Texture.stray_coal",
+            "Texture.stray_stone",
+            "Texture.stray_iron_painted",
+            "Texture.stray_netherite",
+            "Texture.stray_slime",
+            "Texture.stray_tnt",
+            "Texture.stray_honey",
+            "Texture.bogged_iron",
+            "Texture.bogged_copper",
+            "Texture.bogged_obsidian",
+            "Texture.bogged_gold",
+            "Texture.bogged_quartz",
+            "Texture.bogged_emerald",
+            "Texture.bogged_diamond",
+            "Texture.bogged_lapis",
+            "Texture.bogged_wood",
+            "Texture.bogged_coal",
+            "Texture.bogged_stone",
+            "Texture.bogged_iron_painted",
+            "Texture.bogged_netherite",
+            "Texture.bogged_slime",
+            "Texture.bogged_tnt",
+            "Texture.bogged_honey",
+            "Texture.creeper_iron",
+            "Texture.creeper_copper",
+            "Texture.creeper_obsidian",
+            "Texture.creeper_gold",
+            "Texture.creeper_quartz",
+            "Texture.creeper_emerald",
+            "Texture.creeper_diamond",
+            "Texture.creeper_lapis",
+            "Texture.creeper_wood",
+            "Texture.creeper_coal",
+            "Texture.creeper_stone",
+            "Texture.creeper_iron_painted",
+            "Texture.creeper_netherite",
+            "Texture.creeper_slime",
+            "Texture.creeper_tnt",
+            "Texture.creeper_honey",
+            "Texture.spider_iron",
+            "Texture.spider_copper",
+            "Texture.spider_obsidian",
+            "Texture.spider_gold",
+            "Texture.spider_quartz",
+            "Texture.spider_emerald",
+            "Texture.spider_diamond",
+            "Texture.spider_lapis",
+            "Texture.spider_wood",
+            "Texture.spider_coal",
+            "Texture.spider_stone",
+            "Texture.spider_iron_painted",
+            "Texture.spider_netherite",
+            "Texture.spider_slime",
+            "Texture.spider_tnt",
+            "Texture.spider_honey",
+            "Texture.cave_spider_iron",
+            "Texture.cave_spider_copper",
+            "Texture.cave_spider_obsidian",
+            "Texture.cave_spider_gold",
+            "Texture.cave_spider_quartz",
+            "Texture.cave_spider_emerald",
+            "Texture.cave_spider_diamond",
+            "Texture.cave_spider_lapis",
+            "Texture.cave_spider_wood",
+            "Texture.cave_spider_coal",
+            "Texture.cave_spider_stone",
+            "Texture.cave_spider_iron_painted",
+            "Texture.cave_spider_netherite",
+            "Texture.cave_spider_slime",
+            "Texture.cave_spider_tnt",
+            "Texture.cave_spider_honey",
+            "Texture.enderman_iron",
+            "Texture.enderman_copper",
+            "Texture.enderman_obsidian",
+            "Texture.enderman_gold",
+            "Texture.enderman_quartz",
+            "Texture.enderman_emerald",
+            "Texture.enderman_diamond",
+            "Texture.enderman_lapis",
+            "Texture.enderman_wood",
+            "Texture.enderman_coal",
+            "Texture.enderman_stone",
+            "Texture.enderman_iron_painted",
+            "Texture.enderman_netherite",
+            "Texture.enderman_slime",
+            "Texture.enderman_tnt",
+            "Texture.enderman_honey",
+            "Texture.witch_iron",
+            "Texture.witch_copper",
+            "Texture.witch_obsidian",
+            "Texture.witch_gold",
+            "Texture.witch_quartz",
+            "Texture.witch_emerald",
+            "Texture.witch_diamond",
+            "Texture.witch_lapis",
+            "Texture.witch_wood",
+            "Texture.witch_coal",
+            "Texture.witch_stone",
+            "Texture.witch_iron_painted",
+            "Texture.witch_netherite",
+            "Texture.witch_slime",
+            "Texture.witch_tnt",
+            "Texture.witch_honey",
+            "Texture.pillager_iron",
+            "Texture.pillager_copper",
+            "Texture.pillager_obsidian",
+            "Texture.pillager_gold",
+            "Texture.pillager_quartz",
+            "Texture.pillager_emerald",
+            "Texture.pillager_diamond",
+            "Texture.pillager_lapis",
+            "Texture.pillager_wood",
+            "Texture.pillager_coal",
+            "Texture.pillager_stone",
+            "Texture.pillager_iron_painted",
+            "Texture.pillager_netherite",
+            "Texture.pillager_slime",
+            "Texture.pillager_tnt",
+            "Texture.pillager_honey",
+            "Texture.vindicator_iron",
+            "Texture.vindicator_copper",
+            "Texture.vindicator_obsidian",
+            "Texture.vindicator_gold",
+            "Texture.vindicator_quartz",
+            "Texture.vindicator_emerald",
+            "Texture.vindicator_diamond",
+            "Texture.vindicator_lapis",
+            "Texture.vindicator_wood",
+            "Texture.vindicator_coal",
+            "Texture.vindicator_stone",
+            "Texture.vindicator_iron_painted",
+            "Texture.vindicator_netherite",
+            "Texture.vindicator_slime",
+            "Texture.vindicator_tnt",
+            "Texture.vindicator_honey",
+            "Texture.piglin_iron",
+            "Texture.piglin_copper",
+            "Texture.piglin_obsidian",
+            "Texture.piglin_gold",
+            "Texture.piglin_quartz",
+            "Texture.piglin_emerald",
+            "Texture.piglin_diamond",
+            "Texture.piglin_lapis",
+            "Texture.piglin_wood",
+            "Texture.piglin_coal",
+            "Texture.piglin_stone",
+            "Texture.piglin_iron_painted",
+            "Texture.piglin_netherite",
+            "Texture.piglin_slime",
+            "Texture.piglin_tnt",
+            "Texture.piglin_honey",
+            "Texture.zombie_pigman_iron",
+            "Texture.zombie_pigman_copper",
+            "Texture.zombie_pigman_obsidian",
+            "Texture.zombie_pigman_gold",
+            "Texture.zombie_pigman_quartz",
+            "Texture.zombie_pigman_emerald",
+            "Texture.zombie_pigman_diamond",
+            "Texture.zombie_pigman_lapis",
+            "Texture.zombie_pigman_wood",
+            "Texture.zombie_pigman_coal",
+            "Texture.zombie_pigman_stone",
+            "Texture.zombie_pigman_iron_painted",
+            "Texture.zombie_pigman_netherite",
+            "Texture.zombie_pigman_slime",
+            "Texture.zombie_pigman_tnt",
+            "Texture.zombie_pigman_honey"
+          ]
+        }
+      },
+      "geometry": "Array.geos[v.head]",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.skins[v.index]"
+      ]
+    },
+    "controller.render.golemgun.head_golem_cracks": {
+      "arrays": {
+        "geometries": {
+          "Array.geos": [
+            "Geometry.cow",
+            "Geometry.chicken",
+            "Geometry.sheep",
+            "Geometry.pig",
+            "Geometry.fox",
+            "Geometry.wolf",
+            "Geometry.zombie",
+            "Geometry.husk",
+            "Geometry.drowned",
+            "Geometry.skeleton",
+            "Geometry.stray",
+            "Geometry.bogged",
+            "Geometry.creeper",
+            "Geometry.spider",
+            "Geometry.cave_spider",
+            "Geometry.enderman",
+            "Geometry.witch",
+            "Geometry.pillager",
+            "Geometry.vindicator",
+            "Geometry.piglin",
+            "Geometry.zombie_pigman"
+          ]
+        },
+        "textures": {
+          "Array.cracks": [
+            "Texture.cracks_high",
+            "Texture.cracks_med",
+            "Texture.cracks_low",
+            "Texture.cracks_none"
+          ]
+        }
+      },
+      "geometry": "Array.geos[v.head]",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.cracks[math.clamp(query.health / 25, 0, 3)]"
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Golem Gun 0.5.0",
+    "description": "Golem Gun 0.5.0: material wands and the Golem Rod.",
+    "uuid": "e9bb5606-e264-40bf-94b2-3414e57c2a78",
+    "version": [0, 5, 0],
+    "min_engine_version": [1, 26, 20]
+  },
+  "modules": [
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "93f30679-6345-4326-8b8d-5f3ee7dc70f4",
+      "entry": "scripts/main.js",
+      "version": [0, 5, 0]
+    }
+  ],
+  "dependencies": [
+    { "module_name": "@minecraft/server", "version": "2.0.0" },
+    { "module_name": "@minecraft/server-ui", "version": "2.0.0" },
+    { "uuid": "951fc4c5-985a-4897-ad8e-b95f9136aaeb", "version": [0, 5, 0] }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "golemgun:fox",
+      "materials": {
+        "default": "fox"
+      },
+      "textures": {
+        "copper": "textures/entity/golemgun/fox_copper",
+        "baby_copper": "textures/entity/golemgun/fox_baby_copper",
+        "obsidian": "textures/entity/golemgun/fox_obsidian",
+        "baby_obsidian": "textures/entity/golemgun/fox_baby_obsidian",
+        "gold": "textures/entity/golemgun/fox_gold",
+        "baby_gold": "textures/entity/golemgun/fox_baby_gold",
+        "quartz": "textures/entity/golemgun/fox_quartz",
+        "baby_quartz": "textures/entity/golemgun/fox_baby_quartz",
+        "emerald": "textures/entity/golemgun/fox_emerald",
+        "baby_emerald": "textures/entity/golemgun/fox_baby_emerald",
+        "diamond": "textures/entity/golemgun/fox_diamond",
+        "baby_diamond": "textures/entity/golemgun/fox_baby_diamond",
+        "lapis": "textures/entity/golemgun/fox_lapis",
+        "baby_lapis": "textures/entity/golemgun/fox_baby_lapis",
+        "wood": "textures/entity/golemgun/fox_wood",
+        "baby_wood": "textures/entity/golemgun/fox_baby_wood",
+        "coal": "textures/entity/golemgun/fox_coal",
+        "baby_coal": "textures/entity/golemgun/fox_baby_coal",
+        "stone": "textures/entity/golemgun/fox_stone",
+        "baby_stone": "textures/entity/golemgun/fox_baby_stone",
+        "iron": "textures/entity/golemgun/fox_iron",
+        "baby_iron": "textures/entity/golemgun/fox_baby_iron",
+        "netherite": "textures/entity/golemgun/fox_netherite",
+        "baby_netherite": "textures/entity/golemgun/fox_baby_netherite",
+        "slime": "textures/entity/golemgun/fox_slime",
+        "baby_slime": "textures/entity/golemgun/fox_baby_slime",
+        "tnt": "textures/entity/golemgun/fox_tnt",
+        "baby_tnt": "textures/entity/golemgun/fox_baby_tnt",
+        "honey": "textures/entity/golemgun/fox_honey",
+        "baby_honey": "textures/entity/golemgun/fox_baby_honey"
+      },
+      "geometry": {
+        "default": "geometry.fox",
+        "baby": "geometry.fox.baby"
+      },
+      "animations": {
+        "walk": "animation.quadruped.walk",
+        "look_at_target": "animation.common.look_at_target",
+        "crouch": "animation.fox.crouch",
+        "sleep": "animation.fox.sleep",
+        "setup": "animation.fox.setup",
+        "sit": "animation.fox.sit",
+        "wiggle": "animation.fox.wiggle",
+        "stuck": "animation.fox.stuck",
+        "pounce": "animation.fox.pounce",
+        "move": "controller.animation.fox.move",
+        "baby_walk": "animation.fox.baby_walk",
+        "baby_pounce": "animation.fox.baby_pounce",
+        "baby_sit": "animation.fox.baby_sit",
+        "baby_sleep": "animation.fox.baby_sleep",
+        "baby_wiggle": "animation.fox.baby_wiggle"
+      },
+      "scripts": {
+        "scale": "query.is_baby ? 2.0 : 1.0",
+        "animate": [
+          "setup",
+          "move"
+        ],
+        "pre_animation": [
+          "t.m = query.property('golemgun:material');",
+          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.golemgun.fox"
+      ]
+    }
+  }
+}

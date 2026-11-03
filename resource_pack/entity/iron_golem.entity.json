@@ -1,0 +1,62 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "golemgun:iron_golem",
+      "materials": {
+        "default": "iron_golem"
+      },
+      "textures": {
+        "cracked_high": "textures/entity/iron_golem/cracked_high",
+        "cracked_med": "textures/entity/iron_golem/cracked_medium",
+        "cracked_low": "textures/entity/iron_golem/cracked_low",
+        "cracked_none": "textures/entity/iron_golem/cracked_none",
+        "copper": "textures/entity/golemgun/iron_golem_copper",
+        "obsidian": "textures/entity/golemgun/iron_golem_obsidian",
+        "gold": "textures/entity/golemgun/iron_golem_gold",
+        "quartz": "textures/entity/golemgun/iron_golem_quartz",
+        "emerald": "textures/entity/golemgun/iron_golem_emerald",
+        "diamond": "textures/entity/golemgun/iron_golem_diamond",
+        "lapis": "textures/entity/golemgun/iron_golem_lapis",
+        "wood": "textures/entity/golemgun/iron_golem_wood",
+        "coal": "textures/entity/golemgun/iron_golem_coal",
+        "stone": "textures/entity/golemgun/iron_golem_stone",
+        "iron": "textures/entity/golemgun/iron_golem_iron",
+        "netherite": "textures/entity/golemgun/iron_golem_netherite",
+        "slime": "textures/entity/golemgun/iron_golem_slime",
+        "tnt": "textures/entity/golemgun/iron_golem_tnt",
+        "honey": "textures/entity/golemgun/iron_golem_honey"
+      },
+      "geometry": {
+        "default": "geometry.irongolem"
+      },
+      "animations": {
+        "walk": "animation.iron_golem.walk",
+        "move": "animation.iron_golem.move",
+        "walk_to_target": "animation.iron_golem.walk_to_target",
+        "move_to_target": "animation.iron_golem.move_to_target",
+        "attack": "animation.iron_golem.attack",
+        "flower": "animation.iron_golem.flower",
+        "look_at_target": "animation.common.look_at_target",
+        "move_controller": "controller.animation.iron_golem.move",
+        "arm_controller": "controller.animation.iron_golem.arm_movement"
+      },
+      "scripts": {
+        "pre_animation": [
+          "variable.modified_tcos0 = Math.clamp(((Math.cos(query.modified_distance_moved * 13.5) * Math.min(query.modified_move_speed, 0.6) / variable.gliding_speed_value) * 25.0), -12.5, 12.5);",
+          "t.m = query.property('golemgun:material');",
+          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+        ],
+        "animate": [
+          "look_at_target",
+          "move_controller",
+          "arm_controller"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.golemgun.iron_golem",
+        "controller.render.iron_golem_cracks"
+      ]
+    }
+  }
+}
