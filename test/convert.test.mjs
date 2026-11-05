@@ -4,8 +4,10 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Dimension, Player, system, world, ItemStack } from "@minecraft/server";
 import { golemize, paint, restore, setMaterial, spawn } from "../behavior_pack/scripts/convert.js";
-import { DROPS, LADDER, MATERIALS, MOBS } from "../behavior_pack/scripts/data.js";
+import { DROPS, HYBRIDS, LADDER, LEGACY, MATERIALS, MOBS, WANDS } from "../behavior_pack/scripts/data.js";
 import { describe } from "../behavior_pack/scripts/debug.js";
+import { materialOf } from "../behavior_pack/scripts/material.js";
+import { childMaterial, hybridOf } from "../behavior_pack/scripts/breeding.js";
 import { tickAll } from "../behavior_pack/scripts/twists.js";
 import "../behavior_pack/scripts/main.js";
 
@@ -154,10 +156,15 @@ test("every mob and material paints, and every mob gives the rod its own head", 
       const { d, p } = setup();
       const fancy = paint(spawn(d, `minecraft:${mob}`, at), material, p);
       assert.equal(fancy.typeId, `golemgun:${mob}`);
-      assert.equal(fancy.getProperty("golemgun:material"), material);
+      assert.equal(materialOf(fancy), material);
+      assert.equal(fancy.getProperty("golemgun:mat"), MATERIALS.indexOf(material));
+      if (LEGACY.includes(material)) assert.equal(fancy.getProperty("golemgun:material"), material, "legacy materials land on the enum too");
+      else assert.equal(fancy.getProperty("golemgun:material"), "copper", "a hybrid leaves the enum at its default");
       const golem = golemize(fancy, p);
       assert.equal(golem.getProperty("golemgun:head"), i);
-      assert.equal(golem.getProperty("golemgun:material"), material === "iron" ? "iron_painted" : material);
+      assert.equal(materialOf(golem), material);
+      if (LEGACY.includes(material)) assert.equal(golem.getProperty("golemgun:material"), material === "iron" ? "iron_painted" : material);
+      else assert.equal(golem.getProperty("golemgun:material"), "iron", "a hybrid's golem is drawn as plain iron");
       assert.equal(restore(golem).typeId, `minecraft:${mob}`);
     }
   }
@@ -273,8 +280,9 @@ test("a mob with no baby form drops one or two of its material when it dies", ()
     const { d, p } = setup();
     withRandom(0.99, () => { paint(spawn(d, "minecraft:skeleton", at), material, p); only(d).kill(); });
     assert.deepEqual(d.items, [DROPS[material].drop], material);
-    assert.equal(d.counts[0], 2);
+    assert.equal(d.counts[0], 2 * DROPS[material].mult, material);
   }
+  assert.equal(DROPS.boulder.mult, 4, "a giant drops four times as much");
   assert.equal(DROPS.copper.drop, "minecraft:raw_copper");
   assert.equal(DROPS.diamond.drop, "minecraft:diamond");
   assert.equal(DROPS.coal.drop, "minecraft:coal");
@@ -318,26 +326,46 @@ test("a stone chick can drop raw iron (10%) and coal (20%)", () => {
   assert.deepEqual(DROPS.iron.rare, [["minecraft:raw_gold", 0.1]]);
 });
 
-test("baby zombies too: a painted zombie splits into 4 baby zombies", () => {
+test("a painted zombie doesn't split into baby zombies: it pops into 4 babies' worth of material", () => {
   const { d, p } = setup();
-  paint(spawn(d, "minecraft:zombie", at), "gold", p).kill();
-  assert.equal(d.mobs.size, 4);
-  assert.ok([...d.mobs].every((z) => z.typeId === "golemgun:zombie" && z.getComponent("minecraft:is_baby")));
-  assert.ok([...d.mobs].every((z) => z.getProperty("golemgun:material") === "gold"));
+  withRandom(0.99, () => paint(spawn(d, "minecraft:zombie", at), "gold", p).kill());
+  assert.equal(d.mobs.size, 0, "no baby zombies");
+  assert.deepEqual(d.items, Array(4).fill("minecraft:raw_gold"));
+  assert.deepEqual(d.counts, [1, 1, 1, 1]);
+  assert.equal(d.impulses, 4, "every one flies");
+  assert.deepEqual(d.sounds, ["random.pop"]);
+  const { d: d2, p: p2 } = setup();
+  withRandom(0.05, () => paint(spawn(d2, "minecraft:zombie", at), "stone", p2).kill());
+  assert.equal(d2.items.filter((i) => i === "minecraft:raw_iron").length, 4, "and 4 rolls at the rare drops");
 });
 
-test("every mob with a baby form has a never-grow-up baby, and splits", async () => {
+test("farm animals split into never-grow-up babies, and monsters with a baby form pop", async () => {
   const { readFileSync } = await import("node:fs");
+  const pops = Object.keys(MOBS).filter((mob) => MOBS[mob].pops);
+  assert.deepEqual(pops, ["zombie", "husk", "drowned", "piglin", "zombie_pigman"]);
   for (const [mob, kind] of Object.entries(MOBS)) {
-    if (!kind.baby) { assert.equal(kind.shard, null, mob); continue; }
+    if (!kind.baby || kind.pops) { assert.equal(kind.shard, null, mob); }
+    const { d, p } = setup();
+    withRandom(0.99, () => paint(spawn(d, `minecraft:${mob}`, at), "wood", p).kill());
+    if (!kind.baby) continue;
+    if (kind.pops) {
+      assert.equal(d.mobs.size, 0, mob);
+      assert.equal(d.items.length, 4, mob);
+      continue;
+    }
     const e = JSON.parse(readFileSync(new URL(`../behavior_pack/entities/${mob}.json`, import.meta.url)))["minecraft:entity"];
     assert.ok(e.events["golemgun:as_shard"], mob);
     const shard = e.component_groups["golemgun:shard"];
     if (shard) assert.ok(!("minecraft:ageable" in shard) && "minecraft:is_baby" in shard, mob);
-    const { d, p } = setup();
-    paint(spawn(d, `minecraft:${mob}`, at), "wood", p).kill();
     assert.equal(d.mobs.size, 4, mob);
   }
+});
+
+test("a painted baby zombie still drops just one", () => {
+  const { d, p } = setup();
+  const baby = paint(d.spawnEntity("minecraft:zombie", at, { spawnEvent: "minecraft:as_baby" }), "iron", p);
+  withRandom(0.99, () => baby.kill());
+  assert.deepEqual(d.items, ["minecraft:raw_iron"]);
 });
 
 test("golems drop their material, and a never-painted head golem drops raw iron", () => {
@@ -357,7 +385,68 @@ test("plain mobs drop nothing extra", () => {
   assert.deepEqual(d.items, []);
 });
 
-test("an exploding painted creeper throws ore blocks, and only once", () => {
+// A 5x5x5 cube of stone around the creeper, and the 3x3x3 middle of it blown away: 54
+// blocks line the hole.
+const HOLES = [];
+for (let x = 0; x <= 2; x++) for (let y = 63; y <= 65; y++) for (let z = 1; z <= 3; z++) HOLES.push({ x, y, z });
+const blastIn = (material, extra = (d) => {}) => {
+  const { d, p } = setup();
+  d.fill({ x: -1, y: 62, z: 0 }, { x: 3, y: 66, z: 4 }, "minecraft:stone");
+  extra(d);
+  const creeper = paint(spawn(d, "minecraft:creeper", at), material, p);
+  creeper.explode(HOLES);
+  world.afterEvents.entityDie.fire({ deadEntity: creeper });
+  return d;
+};
+
+test("a painted creeper's crater is all its element, with 1-2 blocks of the next tier", () => {
+  for (let i = 0; i < 20; i++) {
+    const d = blastIn("iron");
+    const next = d.count("minecraft:gold_ore");
+    assert.ok(next >= 1 && next <= 2, `${next} gold ore`);
+    assert.equal(d.count("minecraft:iron_ore"), 54 - next, "the rest of the lining is iron ore");
+    assert.equal(d.count("minecraft:stone"), 125 - 27 - 54, "the blocks behind the lining stay");
+    assert.equal(d.count("minecraft:air"), 27, "the blast still breaks blocks");
+    assert.deepEqual(d.items, [], "no thrown blocks, and nothing dropped twice");
+  }
+  const up = { wood: "cobblestone", stone: "iron_ore", iron: "gold_ore", gold: "diamond_ore", diamond: "ancient_debris" };
+  for (const [m, next] of Object.entries(up)) {
+    assert.equal(DROPS[m].crater.ore, `minecraft:${next}`, m);
+    assert.deepEqual(DROPS[m].crater.count, [1, 2], m);
+  }
+  assert.equal(DROPS.netherite.crater.ore, undefined, "nothing above netherite");
+  for (const [m, { crater }] of Object.entries(DROPS)) {
+    if (!["gold", "diamond"].includes(m)) assert.ok(!/diamond/.test(`${crater.host} ${crater.ore}`), m);
+    if (!["diamond", "netherite"].includes(m)) assert.ok(!/debris/.test(`${crater.host} ${crater.ore}`), m);
+  }
+});
+
+test("off-ladder creepers line the whole crater with their element", () => {
+  for (const [m, block] of [["slime", "minecraft:slime"], ["honey", "minecraft:honey_block"], ["obsidian", "minecraft:obsidian"],
+    ["coal", "minecraft:coal_ore"], ["lapis", "minecraft:lapis_ore"], ["netherite", "minecraft:ancient_debris"]]) {
+    assert.equal(blastIn(m).count(block), 54, m);
+  }
+});
+
+test("a crater turns builds too, but never chests, bedrock, beds or torches", () => {
+  const d = blastIn("gold", (d) => {
+    d.blocks.set("1,62,2", "minecraft:chest");      // under the middle of the hole
+    d.blocks.set("1,66,2", "minecraft:bedrock");    // over it
+    d.blocks.set("-1,64,2", "minecraft:oak_planks"); // in the side wall: a build
+    d.blocks.set("3,64,2", "minecraft:bed");
+    d.blocks.set("1,64,0", "minecraft:torch");
+    d.blocks.set("1,64,4", "minecraft:water");
+  });
+  for (const [k, b] of [["1,62,2", "chest"], ["1,66,2", "bedrock"], ["3,64,2", "bed"], ["1,64,0", "torch"], ["1,64,4", "water"]]) {
+    assert.equal(d.blocks.get(k), `minecraft:${b}`, b);
+  }
+  assert.ok(["minecraft:gold_ore", "minecraft:diamond_ore"].includes(d.blocks.get("-1,64,2")), "the planks turned");
+  const diamonds = d.count("minecraft:diamond_ore");
+  assert.ok(diamonds >= 1 && diamonds <= 2, `${diamonds} diamond ore`);
+  assert.equal(d.count("minecraft:gold_ore"), 49 - diamonds);
+});
+
+test("a painted creeper whose blast breaks nothing throws ore blocks, and only once", () => {
   const { d, p } = setup();
   paint(spawn(d, "minecraft:creeper", at), "copper", p);
   const creeper = only(d);
@@ -386,18 +475,22 @@ test("the debug give hands over every wand, the rod and the debug item", () => {
   const { d } = setup();
   const p = new Player(d);
   system.afterEvents.scriptEventReceive.fire({ id: "golem:give", message: "", sourceEntity: p });
-  assert.equal(p.inventory.length, MATERIALS.length + 2);
+  assert.equal(p.inventory.length, WANDS.length + 2, "no wands for hybrids");
 });
 
-test("the wand ladder: each wand is made from the one below it, off-ladder wands from wood", async () => {
+test("the wand ladder: each wand is made from the one below it, off-ladder wands from the ladder wand of their depth", async () => {
   const { readFileSync } = await import("node:fs");
   const recipe = (key) => JSON.parse(readFileSync(new URL(`../behavior_pack/recipes/${key}.json`, import.meta.url)))["minecraft:recipe_shaped"];
-  assert.deepEqual(LADDER, ["wood", "stone", "iron", "gold", "coal", "diamond", "netherite"]);
-  for (const m of MATERIALS.filter((m) => m !== "wood")) {
+  assert.deepEqual(LADDER, ["wood", "stone", "iron", "gold", "diamond", "netherite"], "coal came off the ladder in 0.7.0");
+  const from = { copper: "wood", slime: "wood", tnt: "wood", honey: "wood", lapis: "iron", emerald: "iron", quartz: "gold", coal: "gold", obsidian: "diamond" };
+  for (const m of WANDS.filter((m) => m !== "wood")) {
     const r = recipe(`${m}_wand`);
     assert.equal(r.result.item, `golemgun:${m}_wand`);
-    const below = LADDER.includes(m) ? LADDER[LADDER.indexOf(m) - 1] : "wood";
+    const below = LADDER.includes(m) ? LADDER[LADDER.indexOf(m) - 1] : from[m];
+    assert.ok(below, `${m} has no home tier`);
     assert.equal(r.key.W.item, `golemgun:${below}_wand`, m);
+    const count = r.pattern.join("").split("M").length - 1;
+    assert.equal(count, m === "diamond" ? 8 : 4, `${m} takes ${count}`);
   }
   assert.equal(recipe("iron_wand").key.M.item, "minecraft:iron_ingot");
   assert.equal(recipe("netherite_wand").key.M.item, "minecraft:netherite_scrap");
@@ -417,22 +510,105 @@ test("the Iron Wand: iron mobs and all-iron head golems, but an iron golem is al
   assert.match(p.bar.at(-1), /already iron/);
 });
 
-test("painted mobs are sterile, and painted chickens don't lay eggs", async () => {
+test("painted farm animals breed their own painted kind; monsters don't, and chickens don't lay eggs", async () => {
   const { readFileSync } = await import("node:fs");
-  for (const mob of Object.keys(MOBS)) {
+  for (const [mob, kind] of Object.entries(MOBS)) {
     const text = readFileSync(new URL(`../behavior_pack/entities/${mob}.json`, import.meta.url), "utf8");
-    assert.ok(!text.includes("minecraft:breedable"), `${mob} can breed`);
     assert.ok(!text.includes("minecraft:spawn_entity"), `${mob} lays`);
+    const breeds = !!kind.baby && !kind.pops;
+    assert.equal(text.includes("minecraft:breedable"), breeds, `${mob} ${breeds ? "can't" : "can"} breed`);
+    if (breeds) {
+      const e = JSON.parse(text)["minecraft:entity"];
+      const groups = [e.components, ...Object.values(e.component_groups)];
+      const breedable = groups.find((g) => g["minecraft:breedable"])["minecraft:breedable"];
+      assert.deepEqual(breedable.breeds_with, { mate_type: `golemgun:${mob}`, baby_type: `golemgun:${mob}`,
+        breed_event: { event: "minecraft:entity_born", target: "baby" } }, mob);
+    }
   }
+});
+
+test("a bred baby takes a parent's material, 50/50 when they differ", () => {
+  const { d, p } = setup();
+  const a = paint(spawn(d, "minecraft:cow", at), "stone", p);
+  const b = paint(spawn(d, "minecraft:cow", { x: 2, y: 64, z: 2 }), "iron", p);
+  const seen = new Set();
+  for (const r of [0.1, 0.9]) {
+    withRandom(r, () => {
+      const calf = d.breed(a, b);
+      assert.ok(calf.getComponent("minecraft:is_baby"));
+      seen.add(materialOf(calf));
+      calf.remove();
+    });
+  }
+  assert.deepEqual([...seen].sort(), ["iron", "stone"]);
+  b.remove();
+  const same = paint(spawn(d, "minecraft:cow", { x: 2, y: 64, z: 2 }), "stone", p);
+  assert.equal(materialOf(d.breed(a, same)), "stone", "same material breeds true");
+});
+
+test("listed pairs breed hybrids: stone + wood is clay, and hybrids breed true", () => {
+  const { d, p } = setup();
+  const stone = paint(spawn(d, "minecraft:sheep", at), "stone", p);
+  const wood = paint(spawn(d, "minecraft:sheep", { x: 2, y: 64, z: 2 }), "wood", p);
+  const lamb = d.breed(stone, wood);
+  assert.equal(materialOf(lamb), "clay");
+  assert.equal(lamb.getProperty("golemgun:mat"), MATERIALS.indexOf("clay"));
+  assert.equal(hybridOf("wood", "stone"), "clay");
+  assert.equal(hybridOf("diamond", "stone"), "aquamarine");
+  assert.equal(childMaterial(["clay", "clay"]), "clay");
+  assert.equal(childMaterial(["clay"]), "clay");
+  assert.equal(childMaterial([]), undefined);
+  assert.equal(HYBRIDS.length, 10);
+  for (const [a, b, h] of HYBRIDS) {
+    assert.ok(WANDS.includes(a) && WANDS.includes(b), `${h}'s parents are wand materials`);
+    assert.ok(!WANDS.includes(h), `${h} has no wand`);
+  }
+});
+
+test("a bred boulder calf grows up giant; a wood calf is fragile from birth", () => {
+  const { d, p } = setup();
+  const a = paint(spawn(d, "minecraft:cow", at), "stone", p);
+  const b = paint(spawn(d, "minecraft:cow", { x: 2, y: 64, z: 2 }), "obsidian", p);
+  const calf = d.breed(a, b);
+  assert.equal(materialOf(calf), "boulder");
+  assert.equal(calf.getComponent("minecraft:health").effectiveMax, 10, "not giant while a baby");
+  calf.baby = false;
+  world.afterEvents.dataDrivenEntityTrigger.fire({ entity: calf, eventId: "minecraft:ageable_grow_up" });
+  assert.equal(calf.getComponent("minecraft:health").effectiveMax, 40, "giant once grown");
+  const bull = paint(spawn(d, "minecraft:cow", { x: 5, y: 64, z: 5 }), "boulder", p);
+  assert.equal(bull.getComponent("minecraft:health").effectiveMax, 40, "a grown mob painted boulder is giant at once");
+  a.remove(); b.remove(); calf.remove(); bull.remove();
+  const w1 = paint(spawn(d, "minecraft:cow", at), "wood", p);
+  const w2 = paint(spawn(d, "minecraft:cow", { x: 2, y: 64, z: 2 }), "wood", p);
+  const woodCalf = d.breed(w1, w2);
+  assert.equal(materialOf(woodCalf), "wood");
+  assert.equal(woodCalf.getComponent("minecraft:health").effectiveMax, 4, "fragile from birth");
+});
+
+test("a mob painted before 0.8.0 still reads its material from the enum", () => {
+  const { d } = setup();
+  const old = d.spawnEntity("golemgun:cow", at, { spawnEvent: "minecraft:spawn_adult" });
+  old.setProperty("golemgun:material", "lapis");
+  assert.equal(old.getProperty("golemgun:mat"), -1);
+  assert.equal(materialOf(old), "lapis");
+  const golem = d.spawnEntity("golemgun:head_golem", at);
+  assert.equal(materialOf(golem), "iron", "a plain head golem is iron");
+  golem.setProperty("golemgun:material", "iron_painted");
+  assert.equal(materialOf(golem), "iron");
+  assert.equal(LEGACY.length, 15);
+  assert.deepEqual(MATERIALS.slice(0, 15), LEGACY, "the enum's materials stay first, in order");
 });
 
 test("the debug readout names the tier and what it makes", () => {
   const { d, p } = setup();
   assert.equal(describe(paint(spawn(d, "minecraft:chicken", at), "stone", p)),
-    "chicken: stone, tier 2 of 7. Makes cobblestone, rarely raw iron (10%) or coal (20%)");
+    "chicken: stone, tier 2 of 6. Makes cobblestone, rarely raw iron (10%) or coal (20%)");
   assert.equal(describe(paint(spawn(d, "minecraft:cow", at), "lapis", p)), "cow: lapis, off the ladder. Makes lapis lazuli");
   assert.equal(describe(paint(spawn(d, "minecraft:pig", at), "netherite", p)),
-    "pig: netherite, tier 7 of 7. Makes netherite scrap");
+    "pig: netherite, tier 6 of 6. Makes netherite scrap");
+  assert.equal(describe(paint(spawn(d, "minecraft:cow", at), "coal", p)), "cow: coal, off the ladder. Makes coal");
+  assert.equal(describe(paint(spawn(d, "minecraft:cow", at), "steel", p)), "cow: steel, a hybrid of coal and iron. Makes iron ingot, rarely raw gold (5%)");
+  assert.equal(describe(paint(spawn(d, "minecraft:cow", at), "gold", p)), "cow: gold, tier 4 of 6. Makes raw gold, rarely diamond (10%)");
 });
 
 test("debug speed and give_wand", () => {
@@ -472,10 +648,10 @@ test("habitat drops: a painted drowned can bring up kelp, prismarine and a nauti
   for (const item of ["minecraft:kelp", "minecraft:prismarine_shard", "minecraft:nautilus_shell"]) assert.ok(d.items.includes(item), item);
 });
 
-test("nothing hands out diamonds or netherite except coal, diamond and netherite mobs", () => {
+test("nothing hands out diamonds or netherite except gold, diamond and netherite mobs", () => {
   for (const [material, drop] of Object.entries(DROPS)) {
     const items = [drop.drop, ...drop.rare.map(([i]) => i), ...drop.also.map(([i]) => i)];
-    if (!["coal", "diamond"].includes(material)) assert.ok(!items.includes("minecraft:diamond"), material);
+    if (!["gold", "diamond", "pygmy"].includes(material)) assert.ok(!items.includes("minecraft:diamond"), material);
     if (!["diamond", "netherite"].includes(material)) assert.ok(!items.includes("minecraft:netherite_scrap"), material);
   }
 });
@@ -494,6 +670,42 @@ test("slime mobs bounce and take no fall damage", () => {
   delete world.dimensions.overworld;
 });
 
+test("wood mobs are fragile: a couple of punches, whatever the mob", () => {
+  const { d, p } = setup();
+  const cow = paint(spawn(d, "minecraft:cow", at), "wood", p);
+  assert.equal(cow.getComponent("minecraft:health").effectiveMax, 4);
+  assert.equal(cow.getComponent("minecraft:health").currentValue, 4);
+  const zombie = paint(spawn(d, "minecraft:zombie", at), "wood", p);
+  assert.equal(zombie.getComponent("minecraft:health").effectiveMax, 4);
+  const stone = paint(spawn(d, "minecraft:cow", at), "stone", p);
+  assert.equal(stone.getComponent("minecraft:health").effectiveMax, 10, "other materials keep the mob's health");
+  const golem = golemize(paint(spawn(d, "minecraft:cow", at), "wood", p), p);
+  assert.equal(golem.getComponent("minecraft:health").effectiveMax, 4, "a wood head golem too");
+});
+
+test("durability climbs the ladder: iron mobs ignore fists, diamond mobs want a diamond sword", () => {
+  const { d, p } = setup();
+  const hp = (mob) => mob.getComponent("minecraft:health").currentValue;
+  const iron = paint(spawn(d, "minecraft:cow", at), "iron", p);
+  iron.hurt(1);
+  assert.equal(hp(iron), 10, "a punch does nothing");
+  iron.hurt(5);
+  assert.equal(hp(iron), 6, "a stone sword does 4");
+  const diamond = paint(spawn(d, "minecraft:cow", at), "diamond", p);
+  diamond.hurt(5);
+  assert.equal(hp(diamond), 8, "a stone sword does 2");
+  diamond.hurt(7);
+  assert.equal(hp(diamond), 4, "a diamond sword does 4");
+  const netherite = paint(spawn(d, "minecraft:cow", at), "netherite", p);
+  netherite.hurt(5);
+  assert.equal(hp(netherite), 9, "a stone sword does 1");
+  const stone = paint(spawn(d, "minecraft:cow", at), "stone", p);
+  stone.hurt(4);
+  assert.equal(hp(stone), 6, "stone is plain");
+  diamond.hurt(20);
+  assert.ok(diamond.getComponent("minecraft:health").currentValue <= 0, "a big enough hit still kills");
+});
+
 test("honey mobs are slow, and slow whoever hits them", () => {
   const { d, p } = setup();
   world.dimensions.overworld = d;
@@ -508,19 +720,18 @@ test("honey mobs are slow, and slow whoever hits them", () => {
   delete world.dimensions.overworld;
 });
 
-test("TNT mobs die with a bang that flings their babies; a TNT creeper's blast is big but breaks nothing", () => {
+test("TNT mobs die with a bang that flings their babies; a TNT creeper's crater is sand and TNT", () => {
   const { d, p } = setup();
   paint(spawn(d, "minecraft:cow", at), "tnt", p).kill();
   assert.equal(d.mobs.size, 4);
   assert.ok([...d.mobs].every((calf) => calf.impulses.length === 1), "every calf flew");
   assert.deepEqual(d.sounds, ["random.explode"]);
 
-  const { d: d2, p: p2 } = setup();
-  const creeper = paint(spawn(d2, "minecraft:creeper", at), "tnt", p2);
-  creeper.explode();
-  assert.deepEqual(creeper.lastExplosion.blocks, [], "breaks no blocks");
-  assert.deepEqual(d2.explosions, [{ radius: 6, breaksBlocks: false, causesFire: false }]);
-  assert.ok(d2.items.every((i) => i === "minecraft:tnt"));
+  const d2 = blastIn("tnt");
+  assert.equal(d2.count("minecraft:tnt"), Math.round(54 * 0.15));
+  assert.equal(d2.count("minecraft:sand"), 54 - Math.round(54 * 0.15));
+  assert.equal(d2.count("minecraft:air"), 27, "a normal blast that breaks blocks");
+  assert.deepEqual(d2.explosions, [], "no extra explosion");
 });
 
 test("the three new wands are crafted from a Wood Wand", async () => {

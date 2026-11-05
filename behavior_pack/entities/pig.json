@@ -48,6 +48,15 @@
           ],
           "default": "copper",
           "client_sync": true
+        },
+        "golemgun:mat": {
+          "type": "int",
+          "range": [
+            -1,
+            255
+          ],
+          "default": -1,
+          "client_sync": true
         }
       },
       "runtime_identifier": "minecraft:pig"
@@ -90,7 +99,27 @@
         "minecraft:loot": {
           "table": "loot_tables/entities/pig.json"
         },
-        "minecraft:leashable_to": {}
+        "minecraft:leashable_to": {},
+        "minecraft:behavior.breed": {
+          "priority": 4,
+          "speed_multiplier": 1.0
+        },
+        "minecraft:breedable": {
+          "require_tame": false,
+          "breeds_with": {
+            "mate_type": "golemgun:pig",
+            "baby_type": "golemgun:pig",
+            "breed_event": {
+              "event": "minecraft:entity_born",
+              "target": "baby"
+            }
+          },
+          "breed_items": [
+            "carrot",
+            "beetroot",
+            "potato"
+          ]
+        }
       },
       "minecraft:pig_unsaddled": {
         "minecraft:interact": {
@@ -202,6 +231,32 @@
         },
         "minecraft:behavior.controlled_by_player": {
           "priority": 0
+        }
+      },
+      "golemgun:fragile": {
+        "minecraft:health": {
+          "value": 4,
+          "max": 4
+        }
+      },
+      "golemgun:giant": {
+        "minecraft:scale": {
+          "value": 2.0
+        },
+        "minecraft:health": {
+          "value": 40,
+          "max": 40
+        },
+        "minecraft:movement": {
+          "value": 0.18
+        }
+      },
+      "golemgun:tiny": {
+        "minecraft:scale": {
+          "value": 0.4
+        },
+        "minecraft:movement": {
+          "value": 0.4
         }
       },
       "golemgun:shard": {
@@ -460,6 +515,27 @@
             }
           }
         ]
+      },
+      "golemgun:fragile": {
+        "add": {
+          "component_groups": [
+            "golemgun:fragile"
+          ]
+        }
+      },
+      "golemgun:giant": {
+        "add": {
+          "component_groups": [
+            "golemgun:giant"
+          ]
+        }
+      },
+      "golemgun:tiny": {
+        "add": {
+          "component_groups": [
+            "golemgun:tiny"
+          ]
+        }
       },
       "golemgun:as_shard": {
         "sequence": [

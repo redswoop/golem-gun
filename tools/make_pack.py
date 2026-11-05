@@ -27,8 +27,10 @@ BP = os.path.join(ROOT, "behavior_pack")
 RP = os.path.join(ROOT, "resource_pack")
 
 # The one table for materials: looks, drops, recipes and the tier ladder all come from
-# here. Order is what the `material` property stores, so only ever append. An enum holds
-# at most 16 values, and the head golem's uses one for "iron".
+# here. Order is what the `mat` property stores, so only ever append. The first 15 are
+# LEGACY: mobs painted before 0.8.0 store them in the `material` enum (an enum holds at
+# most 16 values, and the head golem's uses one for "iron"), and the client falls back
+# to it when `mat` is -1.
 #   tier    place on the ladder (docs/farm-tech-plan.md), or None for a wand off the
 #           ladder (made from a Wood Wand)
 #   drop    the material: what a painted mob drops when it dies, and later what it
@@ -38,9 +40,21 @@ RP = os.path.join(ROOT, "resource_pack")
 #   also    other things found where it's found (docs/wand-variety-proposal.md), as
 #           [item, chance]. Never a ladder material 2+ tiers up, which would skip a rung.
 #   twist   what's special about mobs made of it (scripts/twists.js); just a label here
-#   burst   what a painted creeper throws when it explodes
-#   craft   the 4 items around the previous tier's wand (a Wood Wand for off-ladder ones)
-#           that make this wand; "tag:..." for an item tag
+#   burst   what a painted creeper throws when its blast breaks no blocks (else CRATERS)
+#   craft   the items around the wand below that make this wand; "tag:..." for an item tag.
+#           A ladder wand is made from the tier below's wand; a wand off the ladder from
+#           the ladder wand of `from` (Armen: always the previous tier's wand, never a
+#           shortcut from a Wood Wand), wood if unset
+#   count   how many `craft` items: 4 (the sides) or 8 (the whole ring); diamond is 8
+#   tough   how much of every hit mobs of it shrug off, in hearts' halves (healed back,
+#           twists.js). Armen: durability climbs the ladder, so a diamond mob wants a
+#           diamond sword. Fists do 1, swords 4 (wood) to 8 (netherite).
+#   form    a component group the scripts add after painting (FORMS): "fragile" caps
+#           health at FRAGILE_HEALTH whatever the mob (Armen: wood mobs "take ages to
+#           kill" by punching), "giant" and "tiny" rescale grown mobs
+#   hybrid  the two materials whose painted parents breed this one (Armen, 0.8.0: cross
+#           breeds "do something crazy"). No wand makes it, so no `craft` or `wand`.
+#   mult    multiplies the material it drops (a giant drops four times as much)
 MATERIALS = {
     #            block texture    shading    highlights  wand colors (shaft, tip)
     "copper":   {"block": "copper_block", "name": "Copper", "shade": (0.55, 1.5), "lift": 0.0,
@@ -49,36 +63,38 @@ MATERIALS = {
                  "also": [["coal", 0.1], ["pointed_dripstone", 0.05], ["clay_ball", 0.05], ["raw_iron", 0.03]]},
     "obsidian": {"block": "obsidian", "name": "Obsidian", "shade": (0.6, 1.5), "lift": 0.75,
                  "wand": ((30, 20, 50), (130, 80, 200)),
-                 "drop": "obsidian", "burst": "obsidian", "craft": "obsidian", "tier": None, "rare": None,
+                 "drop": "obsidian", "burst": "obsidian", "craft": "obsidian", "tier": None, "rare": None, "from": "diamond",
                  "also": [["gold_nugget", 0.1], ["crying_obsidian", 0.05], ["flint", 0.05]]},
     "gold":     {"block": "gold_block", "name": "Gold", "shade": (0.5, 1.25), "lift": 0.0,
                  "wand": ((150, 110, 30), (250, 215, 70)),
-                 "drop": "raw_gold", "burst": "gold_ore", "craft": "gold_ingot", "tier": 4, "rare": "coal",
+                 "drop": "raw_gold", "burst": "gold_ore", "craft": "gold_ingot", "tier": 4, "rare": "diamond", "tough": 1,
                  "also": [["redstone", 0.1], ["lapis_lazuli", 0.1], ["amethyst_shard", 0.05], ["raw_iron", 0.05]]},
     "quartz":   {"block": "quartz_block_side", "name": "Quartz", "shade": (0.45, 1.05), "lift": 0.0,
                  "wand": ((170, 160, 150), (240, 235, 228)),
-                 "drop": "quartz", "burst": "quartz_ore", "craft": "quartz", "tier": None, "rare": None,
+                 "drop": "quartz", "burst": "quartz_ore", "craft": "quartz", "tier": None, "rare": None, "from": "gold",
                  "also": [["gold_nugget", 0.1], ["glowstone_dust", 0.05], ["magma_cream", 0.03]]},
     "emerald":  {"block": "emerald_block", "name": "Emerald", "shade": (0.5, 1.3), "lift": 0.0,
                  "wand": ((20, 110, 60), (60, 225, 120)),
-                 "drop": "emerald", "burst": "emerald_ore", "craft": "emerald", "tier": None, "rare": None,
+                 "drop": "emerald", "burst": "emerald_ore", "craft": "emerald", "tier": None, "rare": None, "from": "iron",
                  "also": [["raw_iron", 0.1], ["coal", 0.1], ["snowball", 0.1]]},
     "diamond":  {"block": "diamond_block", "name": "Diamond", "shade": (0.5, 1.2), "lift": 0.0,
                  "wand": ((50, 140, 150), (120, 235, 225)),
-                 "drop": "diamond", "burst": "diamond_ore", "craft": "diamond", "tier": 6, "rare": "netherite_scrap",
+                 "drop": "diamond", "burst": "diamond_ore", "craft": "diamond", "count": 8, "tier": 5, "rare": "netherite_scrap", "tough": 3,
                  "also": [["redstone", 0.1], ["lapis_lazuli", 0.1], ["raw_gold", 0.05], ["obsidian", 0.05], ["amethyst_shard", 0.05]]},
     "lapis":    {"block": "lapis_block", "name": "Lapis", "shade": (0.55, 1.4), "lift": 0.0,
                  "wand": ((25, 45, 120), (70, 110, 220)),
-                 "drop": "lapis_lazuli", "burst": "lapis_ore", "craft": "lapis_lazuli", "tier": None, "rare": None,
+                 "drop": "lapis_lazuli", "burst": "lapis_ore", "craft": "lapis_lazuli", "tier": None, "rare": None, "from": "iron",
                  "also": [["redstone", 0.1], ["raw_iron", 0.05], ["amethyst_shard", 0.03]]},
     # The Wood Wand is the free one, the first rung, and the blank off-ladder wands start from.
     "wood":     {"block": "planks_oak", "name": "Wood", "shade": (0.55, 1.4), "lift": 0.0,
                  "wand": ((90, 60, 30), (180, 140, 85)),
-                 "drop": "oak_log", "burst": "oak_log", "craft": None, "tier": 1, "rare": "cobblestone",
+                 "drop": "oak_log", "burst": "oak_log", "craft": None, "tier": 1, "rare": "cobblestone", "form": "fragile",
                  "also": [["apple", 0.1], ["stick", 0.1], ["oak_sapling", 0.05], ["sugar_cane", 0.05], ["honeycomb", 0.03]]},
+    # Off the ladder since 0.7.0 (Armen: "coal to get diamonds is dumb, because you can
+    # just mine some coal"). It still sits at gold's depth, so it's made from a Gold Wand.
     "coal":     {"block": "coal_block", "name": "Coal", "shade": (0.6, 1.6), "lift": 0.5,
                  "wand": ((40, 40, 40), (90, 90, 95)),
-                 "drop": "coal", "burst": "coal_ore", "craft": "coal", "tier": 5, "rare": "diamond",
+                 "drop": "coal", "burst": "coal_ore", "craft": "coal", "tier": None, "rare": None, "from": "gold",
                  "also": [["raw_copper", 0.1], ["flint", 0.1], ["raw_iron", 0.05], ["gunpowder", 0.03]]},
     # Crafted like stone tools, from cobblestone, cobbled deepslate or blackstone. Drops
     # cobblestone, which smelts back into stone.
@@ -91,12 +107,12 @@ MATERIALS = {
     # An iron golem keeps its own sheet: it already is iron.
     "iron":     {"block": "iron_block", "name": "Iron", "shade": (0.4, 1.0), "lift": 0.0,
                  "wand": ((120, 120, 125), (215, 215, 220)),
-                 "drop": "raw_iron", "burst": "iron_ore", "craft": "iron_ingot", "tier": 3, "rare": "raw_gold",
+                 "drop": "raw_iron", "burst": "iron_ore", "craft": "iron_ingot", "tier": 3, "rare": "raw_gold", "tough": 1,
                  "also": [["raw_copper", 0.1], ["redstone", 0.1], ["lapis_lazuli", 0.05], ["emerald", 0.02]]},
     # The top of the ladder. A creeper throws ancient debris, which smelts into scrap.
     "netherite": {"block": "netherite_block", "name": "Netherite", "shade": (0.6, 1.5), "lift": 0.5,
                   "wand": ((50, 40, 45), (100, 85, 90)),
-                  "drop": "netherite_scrap", "burst": "ancient_debris", "craft": "netherite_scrap", "tier": 7, "rare": None,
+                  "drop": "netherite_scrap", "burst": "ancient_debris", "craft": "netherite_scrap", "tier": 6, "rare": None, "tough": 4,
                   "also": [["quartz", 0.1], ["gold_nugget", 0.1], ["glowstone_dust", 0.05], ["magma_cream", 0.05], ["crying_obsidian", 0.02]]},
     # Themed wands, off the ladder, each with a twist (scripts/twists.js).
     "slime":    {"block": "slime", "name": "Slime", "shade": (0.55, 1.4), "lift": 0.0,
@@ -110,15 +126,85 @@ MATERIALS = {
                  "wand": ((160, 100, 20), (245, 180, 40)), "twist": "sticky: slow, and slows whoever hits it",
                  "drop": "honeycomb", "burst": "honeycomb_block", "craft": "honeycomb", "tier": None, "rare": None,
                  "also": [["honey_bottle", 0.1]]},
+    # --- hybrids: only breeding makes these (0.8.0). Everything above is LEGACY. ---
+    "clay":     {"block": "clay", "name": "Clay", "shade": (0.55, 1.35), "lift": 0.0, "hybrid": ("wood", "stone"),
+                 "twist": "squishy: a hit flings it", "drop": "clay_ball", "burst": "clay", "craft": None, "tier": None,
+                 "rare": [["brick", 0.1]], "also": []},
+    "aquamarine": {"block": "prismarine_bricks", "name": "Aquamarine", "shade": (0.55, 1.35), "lift": 0.1, "hybrid": ("stone", "diamond"),
+                   "twist": "sea: swimmers near it breathe water", "drop": "prismarine_shard", "burst": "prismarine_bricks", "craft": None,
+                   "tier": None, "rare": [["prismarine_crystals", 0.1], ["nautilus_shell", 0.01]], "also": []},
+    "steel":    {"block": "iron_block", "name": "Steel", "shade": (0.3, 0.85), "lift": 0.0, "hybrid": ("iron", "coal"),
+                 "twist": "forged: drops ingots, no smelting, tough as diamond", "drop": "iron_ingot", "burst": "iron_block", "craft": None,
+                 "tier": None, "rare": [["raw_gold", 0.05]], "also": [], "tough": 3},
+    "amethyst": {"block": "amethyst_block", "name": "Amethyst", "shade": (0.55, 1.35), "lift": 0.2, "hybrid": ("gold", "diamond"),
+                 "twist": "chime: rings when hit", "drop": "amethyst_shard", "burst": "amethyst_block", "craft": None,
+                 "tier": None, "rare": [["lapis_lazuli", 0.05]], "also": []},
+    "cake":     {"block": "cake_side", "name": "Cake", "shade": (0.6, 1.3), "lift": 0.0, "hybrid": ("wood", "honey"),
+                 "twist": "party: goes off like a party popper", "drop": "cake", "burst": "cake", "craft": None,
+                 "tier": None, "rare": [["cookie", 0.1]], "also": []},
+    "moss":     {"block": "moss_block", "name": "Moss", "shade": (0.55, 1.35), "lift": 0.0, "hybrid": ("wood", "slime"),
+                 "twist": "mossy: mosses the ground it walks on", "drop": "moss_block", "burst": "moss_block", "craft": None,
+                 "tier": None, "rare": [["moss_carpet", 0.1], ["azalea", 0.05]], "also": []},
+    "boulder":  {"block": "cobblestone", "name": "Boulder", "shade": (0.5, 1.4), "lift": 0.0, "hybrid": ("stone", "obsidian"),
+                 "twist": "giant: twice the size, four times the health and the drops", "drop": "cobblestone", "burst": "cobblestone",
+                 "craft": None, "tier": None, "rare": [["obsidian", 0.1]], "also": [], "form": "giant", "tough": 2, "mult": 4},
+    "pygmy":    {"block": "diamond_block", "name": "Pygmy", "shade": (0.6, 1.3), "lift": 0.3, "hybrid": ("diamond", "honey"),
+                 "twist": "tiny: baby-sized for good, and quick", "drop": "diamond", "burst": "honeycomb_block", "craft": None,
+                 "tier": None, "rare": None, "also": [["honeycomb", 0.1]], "form": "tiny"},
+    "ember":    {"block": "magma", "name": "Ember", "shade": (0.6, 1.4), "lift": 0.3, "hybrid": ("coal", "tnt"),
+                 "twist": "ember: burns whoever hits it, and goes off with a bang", "drop": "coal", "burst": "magma", "craft": None,
+                 "tier": None, "rare": [["gunpowder", 0.2], ["blaze_powder", 0.05]], "also": []},
+    "gum":      {"block": "wool_colored_pink", "name": "Gum", "shade": (0.6, 1.3), "lift": 0.0, "hybrid": ("slime", "honey"),
+                 "twist": "gum: bouncy, sticky, and whoever hits it gets stuck", "drop": "slime_ball", "burst": "pink_wool", "craft": None,
+                 "tier": None, "rare": [["honeycomb", 0.1], ["sugar", 0.1]], "also": []},
+}
+# The materials the `material` enum holds: the first 15, in order, and never any more.
+LEGACY = ["copper", "obsidian", "gold", "quartz", "emerald", "diamond", "lapis", "wood", "coal", "stone", "iron",
+          "netherite", "slime", "tnt", "honey"]
+HYBRIDS = {frozenset(m["hybrid"]): n for n, m in MATERIALS.items() if m.get("hybrid")}
+WANDS = [n for n, m in MATERIALS.items() if not m.get("hybrid")]
+FORMS = {n: m["form"] for n, m in MATERIALS.items() if m.get("form")}
+# What each form does, as a component group the scripts add by event (golemgun:<form>).
+FORM_GROUPS = {
+    "fragile": {"minecraft:health": {"value": 4, "max": 4}},
+    "giant": {"minecraft:scale": {"value": 2.0}, "minecraft:health": {"value": 40, "max": 40}, "minecraft:movement": {"value": 0.18}},
+    "tiny": {"minecraft:scale": {"value": 0.4}, "minecraft:movement": {"value": 0.4}},
 }
 RARE_CHANCE = 0.1
-LADDER = sorted((n for n, m in MATERIALS.items() if m["tier"]), key=lambda n: MATERIALS[n]["tier"])
+
+# What a painted creeper's crater turns into (drops.js): every block left lining the hole
+# becomes `host`, the material itself, and 1-2 of them (`count`) `ore`, a taste of the
+# next tier up the ladder (Armen, 0.7.0: "make *all* of the blocks into its elemental
+# type, but leave behind one or two of the next tier"). The ore still needs the right
+# pickaxe to mine.
+CRATERS = {
+    "copper":    {"host": "copper_ore"},
+    "obsidian":  {"host": "obsidian"},
+    "gold":      {"host": "gold_ore", "ore": "diamond_ore", "count": [1, 2]},
+    "quartz":    {"host": "quartz_ore"},
+    "emerald":   {"host": "emerald_ore"},
+    "diamond":   {"host": "diamond_ore", "ore": "ancient_debris", "count": [1, 2]},
+    "lapis":     {"host": "lapis_ore"},
+    "wood":      {"host": "oak_log", "ore": "cobblestone", "count": [1, 2]},
+    "coal":      {"host": "coal_ore"},
+    "stone":     {"host": "stone", "ore": "iron_ore", "count": [1, 2]},
+    "iron":      {"host": "iron_ore", "ore": "gold_ore", "count": [1, 2]},
+    "netherite": {"host": "ancient_debris"},
+    "slime":     {"host": "slime"},
+    "tnt":       {"host": "sand", "ore": "tnt", "share": 0.15},
+    "honey":     {"host": "honey_block"},
+    # Hybrids: creepers don't breed, so only the debug tools make these.
+    "clay": {"host": "clay"}, "aquamarine": {"host": "prismarine_bricks"}, "steel": {"host": "iron_block"},
+    "amethyst": {"host": "amethyst_block"}, "cake": {"host": "cake"}, "moss": {"host": "moss_block"},
+    "boulder": {"host": "cobblestone"}, "pygmy": {"host": "honeycomb_block"}, "ember": {"host": "magma"}, "gum": {"host": "pink_wool"},
+}
+LADDER =sorted((n for n, m in MATERIALS.items() if m["tier"]), key=lambda n: MATERIALS[n]["tier"])
 
 
 def check_pacing():
-    """Diamonds and netherite only come from the ladder's own drops (coal and diamond mobs'
+    """Diamonds and netherite only come from the ladder's own drops (gold and diamond mobs'
     rares, netherite mobs). Anything else handing them out would skip the top rungs."""
-    allowed = {"diamond": {"coal", "diamond"}, "netherite_scrap": {"diamond", "netherite"}}
+    allowed = {"diamond": {"gold", "diamond", "pygmy"}, "netherite_scrap": {"diamond", "netherite"}}
     for n, m in MATERIALS.items():
         items = [m["drop"]] + [i for i, _ in rares(m["rare"])] + [i for i, _ in rares(m.get("also"))]
         for item, ok in allowed.items():
@@ -128,6 +214,46 @@ def check_pacing():
         for item, _ in rares(spec.get("habitat")):
             if item.split(":")[1] in allowed:
                 sys.exit(f"{mob} would drop {item}")
+    if set(CRATERS) != set(MATERIALS):
+        sys.exit(f"CRATERS and MATERIALS list different materials: {set(CRATERS) ^ set(MATERIALS)}")
+    crater_ok = {"diamond_ore": {"gold", "diamond"}, "deepslate_diamond_ore": {"gold", "diamond"}, "ancient_debris": {"diamond", "netherite"}}
+    for n, m in MATERIALS.items():
+        if m["tier"] and "from" in m:
+            sys.exit(f"{n} is on the ladder, so `from` is ignored")
+        if m.get("from") and MATERIALS[m["from"]]["tier"] is None:
+            sys.exit(f"{n} is made from {m['from']}, which isn't a ladder wand")
+        if m.get("hybrid") and (m.get("craft") or m.get("wand") or m.get("tier")):
+            sys.exit(f"{n} is a hybrid, so it has no wand")
+        for parent in m.get("hybrid", ()):
+            if parent not in MATERIALS or MATERIALS[parent].get("hybrid"):
+                sys.exit(f"{n}: parent {parent} isn't a wand material")
+        if m.get("form") and m["form"] not in FORM_GROUPS:
+            sys.exit(f"{n}: no form {m['form']}")
+    if list(MATERIALS)[:len(LEGACY)] != LEGACY:
+        sys.exit("the first 15 materials must stay LEGACY, in order: worlds store them in the enum")
+    if len(MATERIALS) > 256:
+        sys.exit("MATERIALS is full: the mat property holds 256 values")
+    pairs = [frozenset(m["hybrid"]) for m in MATERIALS.values() if m.get("hybrid")]
+    if len(pairs) != len(set(pairs)):
+        sys.exit("two hybrids share the same parents")
+    for n, c in CRATERS.items():
+        for block in (c["host"], c.get("ore")):
+            if block in crater_ok and n not in crater_ok[block]:
+                sys.exit(f"{n} creepers would line their crater with {block}")
+
+
+def check_blocks(assets):
+    """Every block a crater uses exists in the game."""
+    known = set()
+    for d in layers(assets, "resource_packs"):
+        p = f"{assets}/resource_packs/{d}/blocks.json"
+        if os.path.exists(p):
+            with open(p) as f:   # comments here also trail lines
+                known |= set(json.loads(re.sub(r"//.*", "", f.read())))
+    for n, c in CRATERS.items():
+        for block in (c["host"], c.get("ore")):
+            if block and block not in known:
+                sys.exit(f"{n} crater: no block {block} in the game")
 
 
 IRON_DROP = "raw_iron"
@@ -151,12 +277,14 @@ GOLEM_LOOT = f"loot_tables/{NS}/golem.json"   # an iron golem's poppies, without
 #   nose_hangs      the head, not the nose under it, sits on the golem's neck
 #   habitat         things from where this mob lives, as [item, chance]: dropped alongside
 #                   its material (drowned bring up kelp, husks sand)
+#   pops            a monster with a baby form that bursts into material when killed,
+#                   instead of splitting into babies (4 baby zombies fight back)
 #   keep            vanilla layers drawn as they are: {"textures": [...], "controllers": [...]}
 FARM = {"adult_event": "minecraft:spawn_adult", "spawned": {"trigger": "minecraft:spawn_adult"}, "climate": True}
 ZOMBIE = {"adult_event": "minecraft:as_adult", "baby_event": "minecraft:as_baby",
-          "spawned": {"trigger": "minecraft:as_adult"}}
+          "spawned": {"trigger": "minecraft:as_adult"}, "pops": True}
 PIGLIN = {"adult_event": "spawn_adult", "baby_event": "spawn_baby", "spawned": {"trigger": "spawn_adult"},
-          "habitat": [["gold_nugget", 0.05], ["quartz", 0.05]]}
+          "habitat": [["gold_nugget", 0.05], ["quartz", 0.05]], "pops": True}
 # Glowing eyes are the see-through pixels of these sheets: they keep their own colour.
 GLOW = {"glow": True, "alpha_mask": True}
 SPIDER = {"spawned": {"add": {"component_groups": ["minecraft:spider_neutral"]}}}
@@ -454,6 +582,14 @@ def material_property(values, default):
     return {"type": "enum", "values": values, "default": default, "client_sync": True}
 
 
+# Index into MATERIALS, or -1 for a mob painted before 0.8.0 (read the enum instead).
+MAT_PROPERTY = {"type": "int", "range": [-1, 255], "default": -1, "client_sync": True}
+
+
+def material_properties(legacy_values, legacy_default):
+    return {f"{NS}:material": material_property(legacy_values, legacy_default), f"{NS}:mat": MAT_PROPERTY}
+
+
 def make_mob(assets, name, spec):
     d = json_of(layered(assets, "behavior_packs", "entities", f"{name}.json"))
     e = d["minecraft:entity"]
@@ -461,19 +597,28 @@ def make_mob(assets, name, spec):
     identifier = f"{NS}:{name}"
     desc.update({"identifier": identifier, "runtime_identifier": f"minecraft:{name}",
                  "is_spawnable": False, "is_summonable": True})
-    material = f"{NS}:material"
-    desc.setdefault("properties", {})[material] = material_property(list(MATERIALS), next(iter(MATERIALS)))
+    desc.setdefault("properties", {}).update(material_properties(LEGACY, LEGACY[0]))
     groups = list(e["component_groups"].values())
+    breeds = bool(spec.get("baby")) and not spec.get("pops")
     for group in [e["components"]] + groups:
         # Never despawn someone's creation, and never turn it into a plain mob (a zombie
         # into a drowned, a skeleton into a stray), which would lose the paint.
         group.pop("minecraft:despawn", None)
         group.pop("minecraft:transformation", None)
-        # Sterile: more of them only come from breeding plain mobs and painting those.
-        # Chickens lay their material from the script instead of eggs.
-        for key in ("minecraft:breedable", "minecraft:behavior.breed", "minecraft:spawn_entity"):
-            group.pop(key, None)
+        # No egg laying: chickens will lay their material from the script instead.
+        group.pop("minecraft:spawn_entity", None)
+        if breeds:
+            # Farm animals breed with their own painted kind (0.8.0; sterile before). The
+            # baby's material is set by the script (breeding.js): a parent's, or a hybrid.
+            if "minecraft:breedable" in group:
+                group["minecraft:breedable"]["breeds_with"] = {
+                    "mate_type": identifier, "baby_type": identifier,
+                    "breed_event": {"event": "minecraft:entity_born", "target": "baby"}}
+        else:
+            for key in ("minecraft:breedable", "minecraft:behavior.breed"):
+                group.pop(key, None)
     e["components"]["minecraft:persistent"] = {}
+    add_forms(e)
     if spec.get("baby"):
         add_shard(e, spec.get("baby_event", "minecraft:entity_born"))
     if spec.get("spawned") is not None:
@@ -482,6 +627,14 @@ def make_mob(assets, name, spec):
 
 
 SHARD_EVENT = f"{NS}:as_shard"
+
+
+def add_forms(e):
+    """A group per form (FORM_GROUPS), added by the scripts after painting: fragile caps
+    health whatever the mob, giant and tiny rescale it."""
+    for form, group in FORM_GROUPS.items():
+        e["component_groups"][f"{NS}:{form}"] = dict(group)
+        e["events"][f"{NS}:{form}"] = {"add": {"component_groups": [f"{NS}:{form}"]}}
 
 
 def add_shard(e, baby_event):
@@ -509,6 +662,7 @@ def make_golem(assets, identifier, properties):
     e["events"]["minecraft:entity_spawned"] = {"add": {"component_groups": ["minecraft:player_created"]}}
     # Its material drops from the script instead of iron (see drops.js).
     e["components"]["minecraft:loot"] = {"table": GOLEM_LOOT}
+    add_forms(e)
     return d
 
 
@@ -628,15 +782,20 @@ def index_of(prop, values):
     return expr
 
 
+def material_index():
+    """Molang for v.index: the `mat` property, or for a mob painted before 0.8.0 the
+    legacy enum's index (the same index: LEGACY is the start of MATERIALS)."""
+    return [f"t.m = query.property('{NS}:material');", f"t.i = query.property('{NS}:mat');",
+            f"v.index = t.i >= 0 ? t.i : ({index_of('t.m', LEGACY)});"]
+
+
 def client_of(assets, name):
     return json_of(layered(assets, "resource_packs", "entity", f"{name}.entity.json"))
 
 
 def main(assets):
-    if len(MATERIALS) > 15:
-        sys.exit("MATERIALS is full: the material enum holds 16 values and the head golem's needs one "
-                 "more. Move to an int property first (docs/wand-variety-proposal.md, section 4).")
     check_pacing()
+    check_blocks(assets)
     for p in (f"{BP}/entities", f"{BP}/items", f"{BP}/recipes", f"{BP}/loot_tables", f"{RP}/entity", f"{RP}/models", f"{RP}/render_controllers",
               f"{RP}/texts", f"{RP}/textures"):
         fresh(p)
@@ -652,6 +811,11 @@ def main(assets):
     golem_painted, painted = {}, {mob: {} for mob in MOBS}
     for n, m in MATERIALS.items():
         tile = texture("textures/blocks", f"{m['block']}.png")
+        tw, th = tile.size
+        if th > tw and th % tw == 0:   # an animated strip (magma): the first frame
+            tile = tile.crop((0, 0, tw, tw))
+        if tile.getbbox() and tile.getbbox() != (0, 0) + tile.size:   # see-through edges (cake)
+            tile = tile.crop(tile.getbbox())
         golem_painted[n] = golem_png if n == "iron" else make_material(golem_png, tile, m)
         golem_painted[n].save(f"{tex}/iron_golem_{n}.png")
         for mob, spec in MOBS.items():
@@ -663,10 +827,10 @@ def main(assets):
     # Behavior
     for mob, spec in MOBS.items():
         write_json(f"{BP}/entities/{mob}.json", text_filters(make_mob(assets, mob, spec)))
-    write_json(f"{BP}/entities/iron_golem.json", text_filters(make_golem(assets, f"{NS}:iron_golem", {
-        f"{NS}:material": material_property(names, names[0])})))
+    write_json(f"{BP}/entities/iron_golem.json", text_filters(make_golem(assets, f"{NS}:iron_golem",
+        material_properties(LEGACY, LEGACY[0]))))
     write_json(f"{BP}/entities/head_golem.json", text_filters(make_golem(assets, f"{NS}:head_golem", {
-        f"{NS}:material": material_property(head_values(names), "iron"),
+        **material_properties(head_values(LEGACY), "iron"),
         # An int, not an enum: enums hold few values and the head list will grow.
         f"{NS}:head": {"type": "int", "range": [0, 63], "default": 0, "client_sync": True}})))
 
@@ -697,10 +861,7 @@ def main(assets):
                 sys.exit(f"{mob}: no model {geo} in the game's files")
         scripts = d.setdefault("scripts", {})
         scripts["pre_animation"] = [line for line in scripts.get("pre_animation", [])
-                                    if not re.search(r"\b(t\.variant|v\.index|v\.is_cold)\b", line)] + [
-            f"t.m = query.property('{NS}:material');",
-            f"v.index = {index_of('t.m', names)};",
-        ]
+                                    if not re.search(r"\b(t\.variant|v\.index|v\.is_cold)\b", line)] + material_index()
         rc_name = f"controller.render.{NS}.{mob}"
         rc = copy.deepcopy(vanilla_rc[painted_rc])
         # Keep the controller's own arrays (spiders pick a material when invisible).
@@ -729,17 +890,16 @@ def main(assets):
     d["textures"].pop("default")
     for n in names:
         d["textures"][n] = f"textures/entity/{NS}/iron_golem_{n}"
-    d["scripts"]["pre_animation"] += [
-        f"t.m = query.property('{NS}:material');",
-        f"v.index = {index_of('t.m', names)};",
-    ]
+    d["scripts"]["pre_animation"] += material_index()
     d["render_controllers"] = [f"controller.render.{NS}.iron_golem", "controller.render.iron_golem_cracks"]
     d.pop("spawn_egg", None)
     write_json(f"{RP}/entity/iron_golem.entity.json", client)
 
-    # Head golem: one mob, with a model per head and a sheet per head and material
+    # Head golem: one mob, with a model per head and a sheet per head and legacy material.
+    # Hybrids have no head sheets (each would add ~360 KB), so a hybrid's head golem is
+    # drawn as plain iron: an iron body with the mob's own head colours.
     golem_geo = models["geometry.irongolem"]
-    head_materials = head_values(names)
+    head_materials = head_values(LEGACY)
     client = client_of(assets, "iron_golem")
     d = client["minecraft:client_entity"]["description"]
     d["identifier"] = f"{NS}:head_golem"
@@ -765,7 +925,8 @@ def main(assets):
         d["textures"][f"cracks_{key}"] = f"textures/entity/{NS}/golem_cracks_{key}"
     d["scripts"]["pre_animation"] += [
         f"t.m = query.property('{NS}:material');",
-        f"v.material = {index_of('t.m', head_materials)};",
+        f"t.i = query.property('{NS}:mat');",
+        f"v.material = t.i >= 0 ? (t.i < {len(LEGACY)} ? t.i + 1 : 0) : ({index_of('t.m', head_materials)});",
         f"v.head = query.property('{NS}:head');",
         f"v.index = v.head * {len(head_materials)} + v.material;",
     ]
@@ -807,8 +968,8 @@ def main(assets):
         icon_img.save(f"{icons}/{key}.png")
         atlas_data[f"{NS}_{key}"] = {"textures": f"textures/items/{NS}/{key}"}
         write_json(f"{BP}/items/{key}.json", make_item(f"{NS}:{key}", name, f"{NS}_{key}"))
-    for n, m in MATERIALS.items():
-        item(f"{n}_wand", f"{m['name']} Wand", wand_icon(*m["wand"]))
+    for n in WANDS:
+        item(f"{n}_wand", f"{MATERIALS[n]['name']} Wand", wand_icon(*MATERIALS[n]["wand"]))
     item("golem_rod", "Golem Rod", rod_icon())
     item("debug_wand", "Golem Debug", debug_icon())
     write_json(f"{RP}/textures/item_texture.json",
@@ -816,16 +977,18 @@ def main(assets):
 
     # Recipes. The Wood Wand is free on joining and cheap to make. Up the ladder, each wand
     # is the previous tier's wand with four of the next tier's material around it, so
-    # crafting it uses that wand up. Wands off the ladder start from a Wood Wand. The rod is
-    # shaped like the iron golem it makes, with a Wood Wand for a heart.
+    # crafting it uses that wand up (8 for diamond: the whole ring). Wands off the ladder
+    # start from the ladder wand of their depth (`from`). The rod is shaped like the iron
+    # golem it makes, with a Wood Wand for a heart.
     write_json(f"{BP}/recipes/wood_wand.json", recipe("wood_wand", [" P", "S "],
                {"P": {"tag": "minecraft:planks"}, "S": {"item": "minecraft:stick"}}, {"context": "AlwaysUnlocked"}))
     for n, m in MATERIALS.items():
         if not m["craft"]:
             continue
-        before = LADDER[LADDER.index(n) - 1] if m["tier"] else "wood"
+        before = LADDER[LADDER.index(n) - 1] if m["tier"] else m.get("from", "wood")
         what = ({"tag": m["craft"][4:]} if m["craft"].startswith("tag:") else {"item": f"minecraft:{m['craft']}"})
-        write_json(f"{BP}/recipes/{n}_wand.json", recipe(f"{n}_wand", [" M ", "MWM", " M "],
+        pattern = ["MMM", "MWM", "MMM"] if m.get("count", 4) == 8 else [" M ", "MWM", " M "]
+        write_json(f"{BP}/recipes/{n}_wand.json", recipe(f"{n}_wand", pattern,
                    {"M": what, "W": {"item": f"{NS}:{before}_wand"}}, [what]))
     write_json(f"{BP}/recipes/golem_rod.json", recipe("golem_rod", [" C ", "IWI", " I "],
                {"C": {"item": "minecraft:carved_pumpkin"}, "I": {"item": "minecraft:iron_block"},
@@ -848,14 +1011,26 @@ def main(assets):
         f.write(f"export const MATERIALS = {json.dumps(names)};\n")
         f.write(f"export const HEADS = {json.dumps(HEADS)};\n")
         mobs = {mob: {"adult": spec.get("adult_event"), "baby": spec.get("baby_event", "minecraft:entity_born") if spec.get("baby") else None,
-                      "shard": SHARD_EVENT if spec.get("baby") else None, "habitat": rares(spec.get("habitat")),
+                      "shard": SHARD_EVENT if spec.get("baby") and not spec.get("pops") else None,
+                      "pops": spec.get("pops", False), "habitat": rares(spec.get("habitat")),
                       "climate": spec.get("climate", False), "worn": spec.get("worn", {})} for mob, spec in MOBS.items()}
         f.write(f"export const MOBS = {json.dumps(mobs)};\n")
-        drops = {n: {"drop": f"minecraft:{m['drop']}", "burst": f"minecraft:{m['burst']}",
-                     "rare": rares(m["rare"]), "also": rares(m.get("also"))} for n, m in MATERIALS.items()}
+        def crater(c):
+            out = {k: v for k, v in c.items() if k in ("share", "count")}
+            out.update({k: f"minecraft:{c[k]}" for k in ("host", "ore") if c.get(k)})
+            return out
+        drops = {n: {"drop": f"minecraft:{m['drop']}", "burst": f"minecraft:{m['burst']}", "mult": m.get("mult", 1),
+                     "hybrid": sorted(m["hybrid"]) if m.get("hybrid") else None,
+                     "rare": rares(m["rare"]), "also": rares(m.get("also")), "crater": crater(CRATERS[n])}
+                 for n, m in MATERIALS.items()}
         drops[IRON_PAINTED] = drops["iron"]   # (and plain "iron" covers unpainted head golems)
         f.write(f"export const IRON_PAINTED = {json.dumps(IRON_PAINTED)};\n")
         f.write(f"export const LADDER = {json.dumps(LADDER)};\n")
+        f.write(f"export const LEGACY = {json.dumps(LEGACY)};\n")
+        f.write(f"export const WANDS = {json.dumps(WANDS)};\n")
+        f.write(f"export const HYBRIDS = {json.dumps([[*sorted(pair), n] for pair, n in HYBRIDS.items()])};\n")
+        f.write(f"export const FORMS = {json.dumps(FORMS)};\n")
+        f.write(f"export const TOUGHNESS = {json.dumps({n: m['tough'] for n, m in MATERIALS.items() if m.get('tough')})};\n")
         f.write(f"export const DROPS = {json.dumps(drops)};\n")
     print("generated from", assets)
 

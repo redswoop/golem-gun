@@ -73,11 +73,19 @@ export class Entity {
   triggerEvent(event) {
     if (!this.def.events.includes(event)) throw new Error(`${this.typeId} has no event ${event}`);
     if (WEARS[event]) this.worn.add(WEARS[event]);
+    // A group with minecraft:health resets the mob's health and its max, like the game.
+    const e = defs[this.typeId];
+    for (const group of e?.events[event]?.add?.component_groups ?? []) {
+      const health = e.component_groups[group]?.["minecraft:health"];
+      if (health) { this.maxHp = health.max ?? health.value; this.hp = health.value; }
+    }
   }
   getDynamicProperty(k) { return this.dynamic[k]; }
   setDynamicProperty(k, v) { this.dynamic[k] = v; }
   applyImpulse(v) { this.impulses.push(v); }
   addEffect(type, duration, options) { this.effects.push(type); }
+  setOnFire() {}
+  isInWater = false;
   /** Takes damage like a mob in the game, firing entityHurt afterwards. */
   hurt(damage, cause = "entityAttack", damagingEntity = undefined) {
     this.hp -= damage;
@@ -90,23 +98,49 @@ export class Entity {
     if (this.worn.has(name)) return {};
     if (name === "minecraft:health") {
       const me = this;
-      return { get currentValue() { return me.hp; }, effectiveMax: me.def.health, setCurrentValue(v) { me.hp = v; return true; } };
+      return { get currentValue() { return me.hp; }, get effectiveMax() { return me.maxHp ?? me.def.health; }, setCurrentValue(v) { me.hp = v; return true; } };
     }
     return undefined;
   }
   remove() { this.isValid = false; this.dimension.mobs.delete(this); }
   /** Dies like a mob in the game: still valid, and readable, when the event fires. */
   kill() { this.hp = 0; world.afterEvents.entityDie.fire({ deadEntity: this }); this.remove(); }
-  /** A creeper going off: the game removes it without a death. */
-  explode() {
-    const ev = { source: this, dimension: this.dimension, cancel: false, blocks: ["some"], setImpactedBlocks(b) { this.blocks = b; } };
+  /** A creeper going off: the blocks at `holes` are blown away, and the game removes the
+   *  creeper without a death. No holes is a blast that breaks nothing (mobGriefing off). */
+  explode(holes = []) {
+    const dimension = this.dimension;
+    const ev = { source: this, dimension, cancel: false, blocks: holes.map((at) => dimension.getBlock(at)),
+      getImpactedBlocks() { return this.blocks; }, setImpactedBlocks(b) { this.blocks = b; } };
     this.lastExplosion = ev;
     world.beforeEvents.explosion.fire(ev);
+    for (const b of ev.blocks) b.setType("minecraft:air");
     this.remove();
   }
 }
 
+// A block as far as the scripts look at it. Anything never set is air.
+class Block {
+  constructor(dimension, location) { this.dimension = dimension; this.location = location; }
+  get typeId() { return this.dimension.blocks.get(Dimension.key(this.location)) ?? "minecraft:air"; }
+  get isAir() { return this.typeId === "minecraft:air"; }
+  get isLiquid() { return ["minecraft:water", "minecraft:lava"].includes(this.typeId); }
+  getComponent(name) {
+    return name === "minecraft:inventory" && ["minecraft:chest", "minecraft:barrel"].includes(this.typeId) ? {} : undefined;
+  }
+  setType(type) { this.dimension.blocks.set(Dimension.key(this.location), type.includes(":") ? type : `minecraft:${type}`); }
+}
+
 export class Dimension {
+  static key = ({ x, y, z }) => `${x},${y},${z}`;
+  blocks = new Map();
+  getBlock(location) { return new Block(this, { ...location }); }
+  /** Fills a box of blocks, corners included. */
+  fill(from, to, type) {
+    for (let x = from.x; x <= to.x; x++) for (let y = from.y; y <= to.y; y++) for (let z = from.z; z <= to.z; z++) {
+      this.blocks.set(Dimension.key({ x, y, z }), type);
+    }
+  }
+  count(type) { return [...this.blocks.values()].filter((t) => t === type).length; }
   mobs = new Set();
   spawnEntity(typeId, location, options) {
     const mob = new Entity(typeId, this, location, options?.spawnEvent);
@@ -127,6 +161,14 @@ export class Dimension {
   playSound(id) { this.sounds.push(id); }
   spawnParticle() {}
   getEntities() { return [...this.mobs]; }
+  getPlayers() { return world.players.filter((p) => p.dimension === this); }
+  /** Breeds two mobs like the game: a newborn of their kind next to them, then entitySpawn with cause Born. */
+  breed(a, b) {
+    const baby = this.spawnEntity(a.typeId, { x: (a.location.x + b.location.x) / 2, y: a.location.y, z: (a.location.z + b.location.z) / 2 },
+      { spawnEvent: "minecraft:entity_born" });
+    world.afterEvents.entitySpawn.fire({ entity: baby, cause: "Born" });
+    return baby;
+  }
 }
 
 export class Player {
@@ -135,6 +177,11 @@ export class Player {
   constructor(dimension) { this.dimension = dimension; }
   onScreenDisplay = { setActionBar: (t) => this.bar.push(t) };
   playSound() {}
+  setOnFire() {}
+  isInWater = false;
+  effects = [];
+  addEffect(type) { this.effects.push(type); }
+  applyImpulse() {}
   sendMessage(m) { this.messages.push(m); }
   getViewDirection() { return { x: 0, y: 0, z: 1 }; }
   teleport(l) { this.location = l; }
@@ -164,7 +211,7 @@ export const world = {
   getDimension(id) { if (!this.dimensions[id]) throw new Error(`no dimension ${id}`); return this.dimensions[id]; },
   beforeEvents: { playerInteractWithEntity: new Signal(), explosion: new Signal() },
   afterEvents: { itemUse: new Signal(), entityHitEntity: new Signal(), playerSpawn: new Signal(), entityDie: new Signal(),
-    entityHurt: new Signal() },
+    entityHurt: new Signal(), entitySpawn: new Signal(), dataDrivenEntityTrigger: new Signal() },
 };
 export const system = {
   currentTick: 100,

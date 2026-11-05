@@ -38,7 +38,27 @@
         "tnt": "textures/entity/golemgun/cow_tnt",
         "baby_tnt": "textures/entity/golemgun/cow_baby_tnt",
         "honey": "textures/entity/golemgun/cow_honey",
-        "baby_honey": "textures/entity/golemgun/cow_baby_honey"
+        "baby_honey": "textures/entity/golemgun/cow_baby_honey",
+        "clay": "textures/entity/golemgun/cow_clay",
+        "baby_clay": "textures/entity/golemgun/cow_baby_clay",
+        "aquamarine": "textures/entity/golemgun/cow_aquamarine",
+        "baby_aquamarine": "textures/entity/golemgun/cow_baby_aquamarine",
+        "steel": "textures/entity/golemgun/cow_steel",
+        "baby_steel": "textures/entity/golemgun/cow_baby_steel",
+        "amethyst": "textures/entity/golemgun/cow_amethyst",
+        "baby_amethyst": "textures/entity/golemgun/cow_baby_amethyst",
+        "cake": "textures/entity/golemgun/cow_cake",
+        "baby_cake": "textures/entity/golemgun/cow_baby_cake",
+        "moss": "textures/entity/golemgun/cow_moss",
+        "baby_moss": "textures/entity/golemgun/cow_baby_moss",
+        "boulder": "textures/entity/golemgun/cow_boulder",
+        "baby_boulder": "textures/entity/golemgun/cow_baby_boulder",
+        "pygmy": "textures/entity/golemgun/cow_pygmy",
+        "baby_pygmy": "textures/entity/golemgun/cow_baby_pygmy",
+        "ember": "textures/entity/golemgun/cow_ember",
+        "baby_ember": "textures/entity/golemgun/cow_baby_ember",
+        "gum": "textures/entity/golemgun/cow_gum",
+        "baby_gum": "textures/entity/golemgun/cow_baby_gum"
       },
       "geometry": {
         "default": "geometry.cow.v2",
@@ -53,7 +73,8 @@
         "scale": "query.is_baby ? 2.0 : 1.0",
         "pre_animation": [
           "t.m = query.property('golemgun:material');",
-          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+          "t.i = query.property('golemgun:mat');",
+          "v.index = t.i >= 0 ? t.i : ((t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14)))))))))))))));"
         ],
         "animate": [
           "setup",

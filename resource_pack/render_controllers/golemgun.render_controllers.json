@@ -19,7 +19,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -36,7 +46,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       },
@@ -68,7 +88,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -85,7 +115,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       },
@@ -120,7 +160,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -137,7 +187,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         },
         "geometries": {
@@ -175,7 +235,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -192,7 +262,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       },
@@ -224,7 +304,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -241,7 +331,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       },
@@ -284,7 +384,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -301,7 +411,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       },
@@ -342,7 +462,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -359,7 +489,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       }
@@ -391,7 +531,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -408,7 +558,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       }
@@ -440,7 +600,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -457,7 +627,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       }
@@ -489,7 +669,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       }
@@ -522,7 +712,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       }
@@ -560,7 +760,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       }
@@ -598,7 +808,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       }
@@ -627,7 +847,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       },
@@ -665,7 +895,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       },
@@ -703,7 +943,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       },
@@ -744,7 +994,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       }
@@ -776,7 +1036,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       }
@@ -822,7 +1092,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       }
@@ -854,7 +1134,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -871,7 +1161,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       }
@@ -903,7 +1203,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ],
           "Array.baby": [
             "Texture.baby_copper",
@@ -920,7 +1230,17 @@
             "Texture.baby_netherite",
             "Texture.baby_slime",
             "Texture.baby_tnt",
-            "Texture.baby_honey"
+            "Texture.baby_honey",
+            "Texture.baby_clay",
+            "Texture.baby_aquamarine",
+            "Texture.baby_steel",
+            "Texture.baby_amethyst",
+            "Texture.baby_cake",
+            "Texture.baby_moss",
+            "Texture.baby_boulder",
+            "Texture.baby_pygmy",
+            "Texture.baby_ember",
+            "Texture.baby_gum"
           ]
         }
       }
@@ -943,7 +1263,17 @@
             "Texture.netherite",
             "Texture.slime",
             "Texture.tnt",
-            "Texture.honey"
+            "Texture.honey",
+            "Texture.clay",
+            "Texture.aquamarine",
+            "Texture.steel",
+            "Texture.amethyst",
+            "Texture.cake",
+            "Texture.moss",
+            "Texture.boulder",
+            "Texture.pygmy",
+            "Texture.ember",
+            "Texture.gum"
           ]
         }
       },

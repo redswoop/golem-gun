@@ -2,7 +2,7 @@
 
 Written 2026-11-02 by a fresh design agent, at Armen's request: "a 10% chance of also
 dropping the other minerals ... things that might be found at the same layer", and "much
-more variety. like, honey wands ... sugar cane, etc." Status: 0.5.0 built co-drops, habitat drops, the twist engine and Slime, TNT and Honey (shortlist 1-4). Armen wants every themed wand to also turn mobs into its element with a twist ("Cactus mobs that hurt to punch", "Crystal mobs that shatter"). Next is the storage change, then Cactus and Amethyst (shattering into tiny crystal versions). Every
+more variety. like, honey wands ... sugar cane, etc." Status: 0.5.0 built co-drops, habitat drops, the twist engine and Slime, TNT and Honey (shortlist 1-4). Armen wants every themed wand to also turn mobs into its element with a twist ("Cactus mobs that hurt to punch", "Crystal mobs that shatter"). 0.6.0 (Armen) made monsters pop instead of splitting and creepers line their crater with their element. Next is the storage change, then Cactus and Amethyst (shattering into tiny crystal versions). Every
 item id and block texture was checked against the 1.26.60.4 game files unless flagged.
 `material-previews.png` shows candidate textures painted on the cow and pig sheets (flat
 sheets, not 3D mobs).
@@ -13,8 +13,8 @@ Read the ladder by its wands: each wand needs the wand below plus 4 of its mater
 stockpile of higher material can't skip a rung. What breaks pacing is a mob dropping
 material **two or more rungs up**. So a co-drop may be anything at or below the mob's
 tier, off the ladder, or plain vanilla; never a ladder material 2+ tiers up. Diamond and
-netherite scrap only come from the existing rare drops. Stone's 20% coal already makes
-the Coal Wand nearly free after Gold; don't add more of those.
+netherite scrap only come from the existing rare drops. Stone's 20% coal made
+the Coal Wand nearly free after Gold, which is why 0.7.0 took coal off the ladder.
 
 Co-drops are how side wands get discovered: recipes have `unlock` set to their item, so
 the first redstone an iron mob drops puts the Redstone Wand in the recipe book.
@@ -123,6 +123,9 @@ Optional (phase 6): a Golem Guide form listing each family, locked entries as ri
 with a "you've made 14 kinds!" counter.
 
 ## 4. Storage
+
+Done in 0.8.0 as described below (`golemgun:mat`, `LEGACY`, `material.js`), without the
+head golem render split: hybrids simply get no head golem sheets.
 
 Short term: 3 enum slots left, enough for Slime, TNT and Honey.
 

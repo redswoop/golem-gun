@@ -8,16 +8,16 @@
       "crafting_table"
     ],
     "pattern": [
-      " M ",
+      "MMM",
       "MWM",
-      " M "
+      "MMM"
     ],
     "key": {
       "M": {
         "item": "minecraft:diamond"
       },
       "W": {
-        "item": "golemgun:coal_wand"
+        "item": "golemgun:gold_wand"
       }
     },
     "unlock": [

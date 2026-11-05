@@ -14,13 +14,13 @@
 // Holding the Golem Debug shows what the mob you look at is made of.
 import { EquipmentSlot, ItemStack, system, world } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
-import { MATERIALS, HEADS, MOBS, LADDER, DROPS, IRON_PAINTED } from "./data.js";
+import { MATERIALS, HEADS, MOBS, LADDER, DROPS, WANDS } from "./data.js";
 import { isConverted, restore, setMaterial, spawn } from "./convert.js";
+import { materialOf } from "./material.js";
 
 export const SPEED = "golemgun:speed";
 export const speed = () => world.getDynamicProperty(SPEED) ?? 1;
 
-const MATERIAL = "golemgun:material";
 const HEAD = "golemgun:head";
 const GAP = 4;
 const PER_ROW = 8;
@@ -43,12 +43,13 @@ function lineup(player) {
   const mobs = Object.keys(MOBS);
   const entries = [
     ["minecraft:iron_golem", {}],
-    ...MATERIALS.map((m) => ["golemgun:iron_golem", { properties: { [MATERIAL]: m } }]),
+    ...MATERIALS.map((m) => ["golemgun:iron_golem", { material: m }]),
     ...mobs.flatMap((mob, i) => [
-      [`golemgun:${mob}`, { properties: { [MATERIAL]: cycle(i) } }],
-      ...(MOBS[mob].baby ? [[`golemgun:${mob}`, { baby: true, properties: { [MATERIAL]: cycle(i + 1) } }]] : []),
+      [`golemgun:${mob}`, { material: cycle(i) }],
+      ...(MOBS[mob].baby ? [[`golemgun:${mob}`, { baby: true, material: cycle(i + 1) }]] : []),
     ]),
-    ...HEADS.map((_, head) => ["golemgun:head_golem", { properties: { [HEAD]: head, [MATERIAL]: head ? cycle(head) : "iron" } }]),
+    // The first head golem is plain: an iron body with the mob's own head colours.
+    ...HEADS.map((_, head) => ["golemgun:head_golem", { properties: { [HEAD]: head }, material: head ? cycle(head) : undefined }]),
   ];
   const start = ahead(player, 8);
   const d = player.getViewDirection();
@@ -97,13 +98,12 @@ const nice = (id) => id.replace("minecraft:", "").replaceAll("_", " ");
 
 /** What a converted mob is made of, for the action bar and status. */
 export function describe(mob) {
-  let material = mob.getProperty(MATERIAL);
-  if (material === IRON_PAINTED) material = "iron";
+  const material = materialOf(mob);
   const name = mob.typeId.replace("golemgun:", "").replaceAll("_", " ");
   const tier = LADDER.indexOf(material);
   const drop = DROPS[material];
   const rare = drop.rare.length ? `, rarely ${drop.rare.map(([item, chance]) => `${nice(item)} (${Math.round(chance * 100)}%)`).join(" or ")}` : "";
-  const place = tier < 0 ? "off the ladder" : `tier ${tier + 1} of ${LADDER.length}`;
+  const place = drop.hybrid ? `a hybrid of ${drop.hybrid.join(" and ")}` : tier < 0 ? "off the ladder" : `tier ${tier + 1} of ${LADDER.length}`;
   return `${name}: ${material}, ${place}. Makes ${nice(drop.drop)}${rare}`;
 }
 
@@ -124,8 +124,8 @@ function setElement(player, material) {
 }
 
 function giveWand(player, material) {
-  if (!MATERIALS.includes(material)) {
-    player.sendMessage(`§cNo wand ${material}. Try: ${MATERIALS.join(", ")}`);
+  if (!WANDS.includes(material)) {
+    player.sendMessage(`§cNo wand ${material}. Try: ${WANDS.join(", ")}`);
     return;
   }
   player.getComponent("minecraft:inventory").container.addItem(new ItemStack(`golemgun:${material}_wand`));

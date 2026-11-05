@@ -1,20 +1,20 @@
 {
   "format_version": 2,
   "header": {
-    "name": "Golem Gun 0.5.0 (art)",
+    "name": "Golem Gun 0.8.0 (art)",
     "description": "Models and textures for Golem Gun.",
     "uuid": "951fc4c5-985a-4897-ad8e-b95f9136aaeb",
-    "version": [0, 5, 0],
+    "version": [0, 8, 0],
     "min_engine_version": [1, 26, 20]
   },
   "modules": [
     {
       "type": "resources",
       "uuid": "a598bdea-8f83-4b08-be84-5536bfc88f65",
-      "version": [0, 5, 0]
+      "version": [0, 8, 0]
     }
   ],
   "dependencies": [
-    { "uuid": "e9bb5606-e264-40bf-94b2-3414e57c2a78", "version": [0, 5, 0] }
+    { "uuid": "e9bb5606-e264-40bf-94b2-3414e57c2a78", "version": [0, 8, 0] }
   ]
 }

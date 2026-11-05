@@ -4,8 +4,10 @@ Received 2026-11-02. Kids' names are replaced with roles, per this folder's rule
 (Armen) decides, "Spike" (Claude) builds. Status: Phase 1 built as 0.4.0 (2026-11-02).
 
 Decisions: a mutation happens once, so wands convert only vanilla mobs and never
-repaint or upgrade. Coal stays between gold and diamond. Copper is off the ladder, like
-obsidian, quartz, emerald and lapis: crafted from a Wood Wand, and their mobs still drop
+repaint or upgrade. Coal sat between gold and diamond until 0.7.0, when Armen took it off
+the ladder ("coal to get diamonds is dumb"); the Diamond Wand takes 8 diamonds. Copper is
+off the ladder, like coal, obsidian, quartz, emerald and lapis: crafted from the ladder
+wand of their depth (0.7.0; a Wood Wand before), and their mobs still drop
 and produce their material (Armen: "a lapis wand makes a lapis mob that drops lapis"). Namespace stays `golemgun:`
 (renaming would wipe painted mobs in existing worlds). Production will be script timers,
 not `minecraft:spawn_entity`, so the speed multiplier and boosts can scale it. Mobs keep
@@ -16,7 +18,7 @@ Added after the plan (Armen, 2026-11-02): killing a painted mob that has a baby 
 splits it into 4 babies of its material ("1 stone chicken spawns 4 stone chicks. kill the
 chicks, 4 stone, and chance for iron"), including baby zombies. The babies never grow up,
 so splitting can't replace breeding. Each baby drops 1 of the material plus a 10% chance
-of the next tier's. Mobs with no baby form drop 1-2 plus the same 10%. Stone also has a 20% chance of coal
+of the next tier's. 0.6.0 took monsters out of this (Armen: four baby zombies "fuck you up"): they pop into 4 babies' worth of material instead, and painted creepers turn their crater into their element. Mobs with no baby form drop 1-2 plus the same 10%. Stone also has a 20% chance of coal
 (Armen: "stone should also have a chance to drop coal").
 
 ## The pitch in one line
@@ -60,7 +62,7 @@ Preferred: **one golem entity per base mob** (`golemwand:chicken_golem`, `golemw
 
 That's 4 mob types, not 4 × 7 = 28 entity definitions. If the current repo already uses separate entities and it's working, weigh the migration cost first and tell Jet.
 
-### 3. Golems are sterile
+### 3. Golems are sterile (dropped in 0.8.0: painted farm animals breed, and cross-breeds make hybrids; see CLAUDE.md)
 
 Golem entities get **no** `minecraft:breedable`. Elemental eggs/drops are items, never chicks. This is the main brake on the economy. Growth is capped by how fast the player breeds *normal* mobs.
 

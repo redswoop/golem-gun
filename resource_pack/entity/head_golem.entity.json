@@ -386,7 +386,8 @@
         "pre_animation": [
           "variable.modified_tcos0 = Math.clamp(((Math.cos(query.modified_distance_moved * 13.5) * Math.min(query.modified_move_speed, 0.6) / variable.gliding_speed_value) * 25.0), -12.5, 12.5);",
           "t.m = query.property('golemgun:material');",
-          "v.material = (t.m == 'iron') ? 0 : ((t.m == 'copper') ? 1 : ((t.m == 'obsidian') ? 2 : ((t.m == 'gold') ? 3 : ((t.m == 'quartz') ? 4 : ((t.m == 'emerald') ? 5 : ((t.m == 'diamond') ? 6 : ((t.m == 'lapis') ? 7 : ((t.m == 'wood') ? 8 : ((t.m == 'coal') ? 9 : ((t.m == 'stone') ? 10 : ((t.m == 'iron_painted') ? 11 : ((t.m == 'netherite') ? 12 : ((t.m == 'slime') ? 13 : ((t.m == 'tnt') ? 14 : (15)))))))))))))));",
+          "t.i = query.property('golemgun:mat');",
+          "v.material = t.i >= 0 ? (t.i < 15 ? t.i + 1 : 0) : ((t.m == 'iron') ? 0 : ((t.m == 'copper') ? 1 : ((t.m == 'obsidian') ? 2 : ((t.m == 'gold') ? 3 : ((t.m == 'quartz') ? 4 : ((t.m == 'emerald') ? 5 : ((t.m == 'diamond') ? 6 : ((t.m == 'lapis') ? 7 : ((t.m == 'wood') ? 8 : ((t.m == 'coal') ? 9 : ((t.m == 'stone') ? 10 : ((t.m == 'iron_painted') ? 11 : ((t.m == 'netherite') ? 12 : ((t.m == 'slime') ? 13 : ((t.m == 'tnt') ? 14 : (15))))))))))))))));",
           "v.head = query.property('golemgun:head');",
           "v.index = v.head * 16 + v.material;"
         ],

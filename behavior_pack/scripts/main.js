@@ -1,19 +1,20 @@
 // Golem Gun: input and setup. convert.js does the work, drops.js handles what painted
 // mobs leave behind, and debug.js has the test tools.
 import { EquipmentSlot, ItemStack, system, world } from "@minecraft/server";
-import { MATERIALS } from "./data.js";
+import { WANDS as WAND_MATERIALS } from "./data.js";
 import { golemize, paint } from "./convert.js";
 import { debugAction, debugMenu, startReadout } from "./debug.js";
 import "./drops.js";
 import "./twists.js";
+import "./breeding.js";
 
-export const VERSION = "0.5.0";
+export const VERSION = "0.8.0";
 
 const ROD = "golemgun:golem_rod";
 const DEBUG = "golemgun:debug_wand";
 const STARTER = "golemgun:wood_wand";
 const GOT_STARTER = "golemgun:got_starter";
-const WANDS = Object.fromEntries(MATERIALS.map((m) => [`golemgun:${m}_wand`, m]));
+const WANDS = Object.fromEntries(WAND_MATERIALS.map((m) => [`golemgun:${m}_wand`, m]));
 const REACH = 8;
 const HIT_DAMAGE = 1;      // what a wand does as a weapon, handed back after painting
 const REPEAT_TICKS = 6;    // one tap can fire more than one of the events below

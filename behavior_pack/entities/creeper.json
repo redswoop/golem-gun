@@ -30,6 +30,15 @@
           ],
           "default": "copper",
           "client_sync": true
+        },
+        "golemgun:mat": {
+          "type": "int",
+          "range": [
+            -1,
+            255
+          ],
+          "default": -1,
+          "client_sync": true
         }
       }
     },
@@ -282,6 +291,32 @@
         },
         "minecraft:on_target_escape": {},
         "minecraft:target_nearby_sensor": {}
+      },
+      "golemgun:fragile": {
+        "minecraft:health": {
+          "value": 4,
+          "max": 4
+        }
+      },
+      "golemgun:giant": {
+        "minecraft:scale": {
+          "value": 2.0
+        },
+        "minecraft:health": {
+          "value": 40,
+          "max": 40
+        },
+        "minecraft:movement": {
+          "value": 0.18
+        }
+      },
+      "golemgun:tiny": {
+        "minecraft:scale": {
+          "value": 0.4
+        },
+        "minecraft:movement": {
+          "value": 0.4
+        }
       }
     },
     "events": {
@@ -357,6 +392,27 @@
             }
           }
         ]
+      },
+      "golemgun:fragile": {
+        "add": {
+          "component_groups": [
+            "golemgun:fragile"
+          ]
+        }
+      },
+      "golemgun:giant": {
+        "add": {
+          "component_groups": [
+            "golemgun:giant"
+          ]
+        }
+      },
+      "golemgun:tiny": {
+        "add": {
+          "component_groups": [
+            "golemgun:tiny"
+          ]
+        }
       }
     }
   }

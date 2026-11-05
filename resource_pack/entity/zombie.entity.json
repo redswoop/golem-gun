@@ -37,7 +37,27 @@
         "tnt": "textures/entity/golemgun/zombie_tnt",
         "baby_tnt": "textures/entity/golemgun/zombie_baby_tnt",
         "honey": "textures/entity/golemgun/zombie_honey",
-        "baby_honey": "textures/entity/golemgun/zombie_baby_honey"
+        "baby_honey": "textures/entity/golemgun/zombie_baby_honey",
+        "clay": "textures/entity/golemgun/zombie_clay",
+        "baby_clay": "textures/entity/golemgun/zombie_baby_clay",
+        "aquamarine": "textures/entity/golemgun/zombie_aquamarine",
+        "baby_aquamarine": "textures/entity/golemgun/zombie_baby_aquamarine",
+        "steel": "textures/entity/golemgun/zombie_steel",
+        "baby_steel": "textures/entity/golemgun/zombie_baby_steel",
+        "amethyst": "textures/entity/golemgun/zombie_amethyst",
+        "baby_amethyst": "textures/entity/golemgun/zombie_baby_amethyst",
+        "cake": "textures/entity/golemgun/zombie_cake",
+        "baby_cake": "textures/entity/golemgun/zombie_baby_cake",
+        "moss": "textures/entity/golemgun/zombie_moss",
+        "baby_moss": "textures/entity/golemgun/zombie_baby_moss",
+        "boulder": "textures/entity/golemgun/zombie_boulder",
+        "baby_boulder": "textures/entity/golemgun/zombie_baby_boulder",
+        "pygmy": "textures/entity/golemgun/zombie_pygmy",
+        "baby_pygmy": "textures/entity/golemgun/zombie_baby_pygmy",
+        "ember": "textures/entity/golemgun/zombie_ember",
+        "baby_ember": "textures/entity/golemgun/zombie_baby_ember",
+        "gum": "textures/entity/golemgun/zombie_gum",
+        "baby_gum": "textures/entity/golemgun/zombie_baby_gum"
       },
       "geometry": {
         "default": "geometry.zombie.v1.8",
@@ -90,7 +110,8 @@
           "  v.tp_melee_spear_use_attachable_rotation_z = t.melee_spear_use_raise_progress * 90.0 + t.melee_spear_use_sway_progress * -90.0;",
           "};",
           "t.m = query.property('golemgun:material');",
-          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+          "t.i = query.property('golemgun:mat');",
+          "v.index = t.i >= 0 ? t.i : ((t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14)))))))))))))));"
         ],
         "animate": [
           "look_at_target_controller",

@@ -23,7 +23,17 @@
         "netherite": "textures/entity/golemgun/enderman_netherite",
         "slime": "textures/entity/golemgun/enderman_slime",
         "tnt": "textures/entity/golemgun/enderman_tnt",
-        "honey": "textures/entity/golemgun/enderman_honey"
+        "honey": "textures/entity/golemgun/enderman_honey",
+        "clay": "textures/entity/golemgun/enderman_clay",
+        "aquamarine": "textures/entity/golemgun/enderman_aquamarine",
+        "steel": "textures/entity/golemgun/enderman_steel",
+        "amethyst": "textures/entity/golemgun/enderman_amethyst",
+        "cake": "textures/entity/golemgun/enderman_cake",
+        "moss": "textures/entity/golemgun/enderman_moss",
+        "boulder": "textures/entity/golemgun/enderman_boulder",
+        "pygmy": "textures/entity/golemgun/enderman_pygmy",
+        "ember": "textures/entity/golemgun/enderman_ember",
+        "gum": "textures/entity/golemgun/enderman_gum"
       },
       "geometry": {
         "default": "geometry.enderman.v1.8"
@@ -32,7 +42,8 @@
         "pre_animation": [
           "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed / variable.gliding_speed_value) * 28.65;",
           "t.m = query.property('golemgun:material');",
-          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+          "t.i = query.property('golemgun:mat');",
+          "v.index = t.i >= 0 ? t.i : ((t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14)))))))))))))));"
         ]
       },
       "animations": {

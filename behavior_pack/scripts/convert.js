@@ -4,12 +4,10 @@
 // swaps it for a lookalike whose `material` property picks the texture. After that a
 // wand only changes the property. The Golem Rod swaps a mob for the head golem.
 import { ItemStack } from "@minecraft/server";
-import { MATERIALS, HEADS, MOBS, IRON_PAINTED } from "./data.js";
+import { HEADS, MATERIALS, MOBS } from "./data.js";
+import { HEAD_GOLEM, NS, applyForm, materialOf, setMaterialOf } from "./material.js";
 
-const NS = "golemgun";
-const MATERIAL = `${NS}:material`;
 const HEAD = `${NS}:head`;
-const HEAD_GOLEM = `${NS}:head_golem`;
 const IRON_GOLEM = "minecraft:iron_golem";
 const CLIMATE = "minecraft:climate_variant";
 const HEALTH = "minecraft:health";
@@ -24,10 +22,6 @@ for (const mob of Object.keys(MOBS)) {
 }
 const VANILLA = Object.fromEntries(Object.entries(FANCY).map(([v, f]) => [f, v]));
 
-// A head golem's plain "iron" means an iron body with the mob's own head colours, so an
-// all-iron one is stored as IRON_PAINTED (see make_pack.py).
-const headValue = (material) => (material === "iron" ? IRON_PAINTED : material);
-
 export const isConverted = (e) => e.typeId === HEAD_GOLEM || e.typeId in VANILLA;
 
 /** The spawn event that gives this type the right age and origin, if it needs one. */
@@ -38,10 +32,11 @@ function spawnEvent(typeId, baby) {
   return (baby ? MOBS[kind].baby : MOBS[kind].adult) ?? undefined;
 }
 
-export function spawn(dimension, typeId, location, { baby = false, properties = {} } = {}) {
+export function spawn(dimension, typeId, location, { baby = false, properties = {}, material = undefined } = {}) {
   const event = spawnEvent(typeId, baby);
   const mob = dimension.spawnEntity(typeId, location, event ? { spawnEvent: event } : undefined);
   for (const [k, v] of Object.entries(properties)) mob.setProperty(k, v);
+  if (material) setMaterialOf(mob, material);
   return mob;
 }
 
@@ -73,12 +68,13 @@ function swap(mob, typeId, options) {
  * The same individual in another skin: age, climate and what it wears (a saddle, shorn
  * wool, a creeper's charge) all carry over. Held items and armor don't.
  */
-function twin(mob, typeId, properties = {}) {
+function twin(mob, typeId, material = undefined) {
   const kind = MOBS[KIND[mob.typeId]];
   const worn = Object.entries(kind?.worn ?? {}).filter(([component]) => mob.getComponent(component));
-  if (kind?.climate) properties = { ...properties, [CLIMATE]: mob.getProperty(CLIMATE) };
-  const next = swap(mob, typeId, { baby: isBaby(mob), properties });
+  const properties = kind?.climate ? { [CLIMATE]: mob.getProperty(CLIMATE) } : {};
+  const next = swap(mob, typeId, { baby: isBaby(mob), properties, material });
   for (const [, event] of worn) next.triggerEvent(event);
+  if (material) applyForm(next, material);
   return next;
 }
 
@@ -116,7 +112,7 @@ export function paint(mob, material, player, refund = 0) {
   }
   if (refuseOwned(mob, player)) return undefined;
   const before = health(mob);
-  const painted = twin(mob, FANCY[mob.typeId], { [MATERIAL]: material });
+  const painted = twin(mob, FANCY[mob.typeId], material);
   setHealth(painted, before + refund);
   sparkle(painted, player);
   return painted;
@@ -124,11 +120,12 @@ export function paint(mob, material, player, refund = 0) {
 
 /** Debug: set any converted mob's material, or paint a vanilla one, ignoring the once-only rule. */
 export function setMaterial(mob, material) {
-  if (mob.typeId === HEAD_GOLEM) mob.setProperty(MATERIAL, headValue(material));
-  else if (isConverted(mob)) mob.setProperty(MATERIAL, material);
-  else if (mob.typeId in FANCY) return twin(mob, FANCY[mob.typeId], { [MATERIAL]: material });
-  else return undefined;
-  return mob;
+  if (isConverted(mob)) {
+    setMaterialOf(mob, material);
+    applyForm(mob, material);
+    return mob;
+  }
+  return mob.typeId in FANCY ? twin(mob, FANCY[mob.typeId], material) : undefined;
 }
 
 /** Turn a mob into a golem wearing its head. Keeps its material and name. */
@@ -144,8 +141,10 @@ export function golemize(mob, player) {
   }
   if (refuseOwned(mob, player)) return undefined;
   if (mob.getComponent(SADDLED)) mob.dimension.spawnItem(new ItemStack("minecraft:saddle"), mob.location);
-  const material = mob.typeId in VANILLA ? headValue(mob.getProperty(MATERIAL)) : "iron";
-  const golem = swap(mob, HEAD_GOLEM, { properties: { [HEAD]: HEADS.indexOf(head), [MATERIAL]: material } });
+  // A plain mob's golem keeps the defaults: an iron body with the mob's own head colours.
+  const material = mob.typeId in VANILLA ? materialOf(mob) : undefined;
+  const golem = swap(mob, HEAD_GOLEM, { properties: { [HEAD]: HEADS.indexOf(head) }, material });
+  if (material) applyForm(golem, material);
   sparkle(golem, player);
   return golem;
 }

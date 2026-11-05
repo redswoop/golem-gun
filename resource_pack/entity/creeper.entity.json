@@ -24,7 +24,17 @@
         "netherite": "textures/entity/golemgun/creeper_netherite",
         "slime": "textures/entity/golemgun/creeper_slime",
         "tnt": "textures/entity/golemgun/creeper_tnt",
-        "honey": "textures/entity/golemgun/creeper_honey"
+        "honey": "textures/entity/golemgun/creeper_honey",
+        "clay": "textures/entity/golemgun/creeper_clay",
+        "aquamarine": "textures/entity/golemgun/creeper_aquamarine",
+        "steel": "textures/entity/golemgun/creeper_steel",
+        "amethyst": "textures/entity/golemgun/creeper_amethyst",
+        "cake": "textures/entity/golemgun/creeper_cake",
+        "moss": "textures/entity/golemgun/creeper_moss",
+        "boulder": "textures/entity/golemgun/creeper_boulder",
+        "pygmy": "textures/entity/golemgun/creeper_pygmy",
+        "ember": "textures/entity/golemgun/creeper_ember",
+        "gum": "textures/entity/golemgun/creeper_gum"
       },
       "geometry": {
         "default": "geometry.creeper.v1.8",
@@ -38,7 +48,8 @@
           "variable.leg_rot = Math.cos(query.modified_distance_moved * 38.17326) * 80.22 * query.modified_move_speed;",
           "variable.flash = Math.mod(Math.Round(query.swell_amount * 10.0), 2.0);",
           "t.m = query.property('golemgun:material');",
-          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+          "t.i = query.property('golemgun:mat');",
+          "v.index = t.i >= 0 ? t.i : ((t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14)))))))))))))));"
         ],
         "animate": [
           "creeper_head_controller",

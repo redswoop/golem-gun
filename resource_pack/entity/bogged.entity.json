@@ -23,7 +23,17 @@
         "netherite": "textures/entity/golemgun/bogged_netherite",
         "slime": "textures/entity/golemgun/bogged_slime",
         "tnt": "textures/entity/golemgun/bogged_tnt",
-        "honey": "textures/entity/golemgun/bogged_honey"
+        "honey": "textures/entity/golemgun/bogged_honey",
+        "clay": "textures/entity/golemgun/bogged_clay",
+        "aquamarine": "textures/entity/golemgun/bogged_aquamarine",
+        "steel": "textures/entity/golemgun/bogged_steel",
+        "amethyst": "textures/entity/golemgun/bogged_amethyst",
+        "cake": "textures/entity/golemgun/bogged_cake",
+        "moss": "textures/entity/golemgun/bogged_moss",
+        "boulder": "textures/entity/golemgun/bogged_boulder",
+        "pygmy": "textures/entity/golemgun/bogged_pygmy",
+        "ember": "textures/entity/golemgun/bogged_ember",
+        "gum": "textures/entity/golemgun/bogged_gum"
       },
       "geometry": {
         "default": "geometry.skeleton.bogged",
@@ -36,7 +46,8 @@
           "variable.riding_y_offset_on_vehicle_where_other_entites_can_stand = query.is_riding_any_entity_of_type('minecraft:minecart', 'minecraft:boat', 'minecraft:chest_boat') ? -3.0 : 0.0;",
           "variable.riding_y_offset = variable.riding_y_offset_with_respect_to_player + variable.riding_y_offset_on_vehicle_where_other_entites_can_stand;",
           "t.m = query.property('golemgun:material');",
-          "v.index = (t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14))))))))))))));"
+          "t.i = query.property('golemgun:mat');",
+          "v.index = t.i >= 0 ? t.i : ((t.m == 'copper') ? 0 : ((t.m == 'obsidian') ? 1 : ((t.m == 'gold') ? 2 : ((t.m == 'quartz') ? 3 : ((t.m == 'emerald') ? 4 : ((t.m == 'diamond') ? 5 : ((t.m == 'lapis') ? 6 : ((t.m == 'wood') ? 7 : ((t.m == 'coal') ? 8 : ((t.m == 'stone') ? 9 : ((t.m == 'iron') ? 10 : ((t.m == 'netherite') ? 11 : ((t.m == 'slime') ? 12 : ((t.m == 'tnt') ? 13 : (14)))))))))))))));"
         ]
       },
       "animations": {
