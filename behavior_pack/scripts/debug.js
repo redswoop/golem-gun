@@ -11,12 +11,14 @@
 //   /scriptevent golem:set_element <material>  repaint the converted mob you look at (or
 //                                the nearest), ignoring the once-only rule
 //   /scriptevent golem:speed <n>  production speed multiplier (production comes in phase 2)
+//   /scriptevent golem:guide     open the Golem Guide (handled in main.js)
 // Holding the Golem Debug shows what the mob you look at is made of.
 import { EquipmentSlot, ItemStack, system, world } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 import { MATERIALS, HEADS, MOBS, LADDER, DROPS, WANDS } from "./data.js";
 import { isConverted, restore, setMaterial, spawn } from "./convert.js";
 import { materialOf } from "./material.js";
+import { showGuide } from "./guide.js";
 
 export const SPEED = "golemgun:speed";
 export const speed = () => world.getDynamicProperty(SPEED) ?? 1;
@@ -174,10 +176,13 @@ export async function debugMenu(player, give) {
     ["Give wands", "give"], ["Spawn test lineup", "lineup"], ["Spawn iron golem", "spawn", "golem"], ["Spawn cow", "spawn", "cow"],
     ["Spawn zombie", "spawn", "zombie"], ["Spawn creeper", "spawn", "creeper"],
     ["Reset converted mobs", "reset"], ["Remove converted mobs", "despawn"], ["Teleport to nearest", "tp"], ["Status", "status"],
+    ["Golem Guide", "guide"],
   ];
   const form = new ActionFormData().title("Golem Debug");
   for (const [label] of actions) form.button(label);
   const { canceled, selection } = await form.show(player);
   if (canceled) return;
-  debugAction(player, actions[selection][1], actions[selection][2], give);
+  const [, name, arg] = actions[selection];
+  if (name === "guide") showGuide(player);
+  else debugAction(player, name, arg, give);
 }

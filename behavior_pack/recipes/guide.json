@@ -1,0 +1,29 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "golemgun:guide"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "B",
+      "S"
+    ],
+    "key": {
+      "B": {
+        "item": "minecraft:book"
+      },
+      "S": {
+        "item": "minecraft:stick"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "golemgun:guide"
+    }
+  }
+}

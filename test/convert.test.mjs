@@ -4,11 +4,13 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Dimension, Player, system, world, ItemStack } from "@minecraft/server";
 import { golemize, paint, restore, setMaterial, spawn } from "../behavior_pack/scripts/convert.js";
-import { DROPS, HYBRIDS, LADDER, LEGACY, MATERIALS, MOBS, WANDS } from "../behavior_pack/scripts/data.js";
+import { DROPS, HYBRIDS, LADDER, LEGACY, MATERIALS, MOBS, NAMES, WANDS } from "../behavior_pack/scripts/data.js";
 import { describe } from "../behavior_pack/scripts/debug.js";
 import { materialOf } from "../behavior_pack/scripts/material.js";
 import { childMaterial, hybridOf } from "../behavior_pack/scripts/breeding.js";
 import { tickAll } from "../behavior_pack/scripts/twists.js";
+import { PAGES, showGuide } from "../behavior_pack/scripts/guide.js";
+import { ActionFormData } from "@minecraft/server-ui";
 import "../behavior_pack/scripts/main.js";
 
 const at = { x: 1, y: 64, z: 2 };
@@ -463,19 +465,71 @@ test("a plain creeper's explosion throws nothing", () => {
   assert.deepEqual(d.items, []);
 });
 
-test("a new player gets one Wood Wand, once", () => {
+test("a new player gets one Wood Wand and one Golem Guide, once", () => {
   const { d } = setup();
   const p = new Player(d);
   world.afterEvents.playerSpawn.fire({ player: p, initialSpawn: true });
   world.afterEvents.playerSpawn.fire({ player: p, initialSpawn: true });
-  assert.deepEqual(p.inventory.map((i) => i.typeId), ["golemgun:wood_wand"]);
+  assert.deepEqual(p.inventory.map((i) => i.typeId), ["golemgun:wood_wand", "golemgun:guide"]);
+});
+
+test("a full inventory doesn't swallow the starter: it lands at the player's feet", () => {
+  const { d } = setup();
+  const p = new Player(d);
+  for (let i = 0; i < 36; i++) p.inventory.push(new ItemStack("minecraft:dirt"));
+  world.afterEvents.playerSpawn.fire({ player: p, initialSpawn: true });
+  assert.deepEqual(d.items, ["golemgun:wood_wand", "golemgun:guide"]);
+  assert.ok(p.messages.some((m) => /inventory is full/.test(m)));
+  world.afterEvents.playerSpawn.fire({ player: p, initialSpawn: true });
+  assert.equal(d.items.length, 2, "once");
+});
+
+test("a player from before the guide gets one on their next join", () => {
+  const { d } = setup();
+  const p = new Player(d);
+  p.setDynamicProperty("golemgun:got_starter", true);
+  world.afterEvents.playerSpawn.fire({ player: p, initialSpawn: true });
+  assert.deepEqual(p.inventory.map((i) => i.typeId), ["golemgun:guide"]);
+});
+
+test("the guide quotes the real recipes, drops and craters", () => {
+  const text = PAGES.map(([, body]) => body).join("\n");
+  const ladder = PAGES.find(([t]) => t === "The wand ladder")[1];
+  assert.match(ladder, /Stone Wand: Wood Wand \+ 4 cobblestone/);
+  assert.match(ladder, /Diamond Wand: Gold Wand \+ 8 diamond/);
+  assert.match(ladder, /Netherite Wand: Diamond Wand \+ 4 netherite scrap/);
+  const side = PAGES.find(([t]) => t === "Side wands")[1];
+  assert.match(side, /From a Wood Wand: .*Copper.*Slime.*TNT.*Honey/);
+  assert.match(side, /From a Diamond Wand: Obsidian \(4 obsidian\)/);
+  assert.match(side, /From an Iron Wand/);
+  assert.match(side, /TNT \(4 TNT\)/);
+  for (const m of WANDS) assert.match(text, new RegExp(NAMES[m]), `${m} is in the guide`);
+  assert.match(text, /Stone: cobblestone, rarely raw iron \(10%\) or coal \(20%\)/);
+  assert.match(text, /Iron creeper: iron ore, with a little gold ore hidden in it/);
+  assert.match(text, /Diamond mobs shrug off 3 of every hit/);
+  assert.match(text, /stone and wood make Clay/);
+  assert.doesNotMatch(text, /aquamarine|pygmy/i, "hybrids stay a surprise");
+});
+
+test("using the guide, or /scriptevent golem:guide, opens a menu with every page", async () => {
+  const { d } = setup();
+  const p = new Player(d);
+  ActionFormData.shown.length = 0;
+  world.afterEvents.itemUse.fire({ source: p, itemStack: new ItemStack("golemgun:guide") });
+  system.afterEvents.scriptEventReceive.fire({ id: "golem:guide", message: "", sourceEntity: p });
+  await showGuide(p, 0);
+  await new Promise((r) => setTimeout(r, 0));
+  assert.equal(ActionFormData.shown.length, 3);
+  assert.deepEqual(ActionFormData.shown[0].buttons, PAGES.map(([t]) => t));
+  assert.equal(ActionFormData.shown[2].titleText, "Start here");
+  assert.deepEqual(ActionFormData.shown[2].buttons, ["Back"]);
 });
 
 test("the debug give hands over every wand, the rod and the debug item", () => {
   const { d } = setup();
   const p = new Player(d);
   system.afterEvents.scriptEventReceive.fire({ id: "golem:give", message: "", sourceEntity: p });
-  assert.equal(p.inventory.length, WANDS.length + 2, "no wands for hybrids");
+  assert.equal(p.inventory.length, WANDS.length + 3, "no wands for hybrids");
 });
 
 test("the wand ladder: each wand is made from the one below it, off-ladder wands from the ladder wand of their depth", async () => {

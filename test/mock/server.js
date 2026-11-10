@@ -192,7 +192,9 @@ export class Player {
   getComponent(name) {
     if (name !== "minecraft:inventory") return undefined;
     const items = this.inventory;
-    return { container: { get size() { return 36; }, getItem: (i) => items[i], addItem: (it) => { items.push(it); } } };
+    // Like the game: a full inventory hands the stack back instead of taking it.
+    return { container: { get size() { return 36; }, getItem: (i) => items[i],
+      addItem: (it) => { if (items.length >= 36) return it; items.push(it); } } };
   }
 }
 

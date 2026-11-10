@@ -171,6 +171,8 @@ FORM_GROUPS = {
     "tiny": {"minecraft:scale": {"value": 0.4}, "minecraft:movement": {"value": 0.4}},
 }
 RARE_CHANCE = 0.1
+# How the guide names a `craft` item tag.
+CRAFT_NAMES = {"tag:minecraft:stone_tool_materials": "cobblestone", "tnt": "TNT"}
 
 # What a painted creeper's crater turns into (drops.js): every block left lining the hole
 # becomes `host`, the material itself, and 1-2 of them (`count`) `ore`, a taste of the
@@ -536,6 +538,18 @@ def debug_icon():
     d = ImageDraw.Draw(im)
     d.line((3, 13, 11, 5), fill=(60, 60, 60, 255), width=2)
     d.rectangle((10, 2, 13, 5), fill=(255, 220, 60, 255))
+    return im
+
+
+def guide_icon():
+    """A closed book with a golem-grey spine and a copper clasp."""
+    im = Image.new("RGBA", (16, 16))
+    d = ImageDraw.Draw(im)
+    d.rectangle((3, 2, 12, 13), fill=(120, 70, 40, 255))      # cover
+    d.rectangle((3, 2, 4, 13), fill=(170, 170, 175, 255))     # spine
+    d.rectangle((5, 3, 12, 12), fill=(150, 90, 50, 255))      # front
+    d.rectangle((13, 3, 13, 12), fill=(235, 225, 200, 255))   # pages
+    d.rectangle((7, 6, 10, 9), fill=(235, 140, 90, 255))      # clasp
     return im
 
 
@@ -972,6 +986,7 @@ def main(assets):
         item(f"{n}_wand", f"{MATERIALS[n]['name']} Wand", wand_icon(*MATERIALS[n]["wand"]))
     item("golem_rod", "Golem Rod", rod_icon())
     item("debug_wand", "Golem Debug", debug_icon())
+    item("guide", "Golem Guide", guide_icon())
     write_json(f"{RP}/textures/item_texture.json",
                {"resource_pack_name": NS, "texture_name": "atlas.items", "texture_data": atlas_data})
 
@@ -990,6 +1005,9 @@ def main(assets):
         pattern = ["MMM", "MWM", "MMM"] if m.get("count", 4) == 8 else [" M ", "MWM", " M "]
         write_json(f"{BP}/recipes/{n}_wand.json", recipe(f"{n}_wand", pattern,
                    {"M": what, "W": {"item": f"{NS}:{before}_wand"}}, [what]))
+    # The guide comes free on joining too; this is for anyone who loses it.
+    write_json(f"{BP}/recipes/guide.json", recipe("guide", ["B", "S"],
+               {"B": {"item": "minecraft:book"}, "S": {"item": "minecraft:stick"}}, {"context": "AlwaysUnlocked"}))
     write_json(f"{BP}/recipes/golem_rod.json", recipe("golem_rod", [" C ", "IWI", " I "],
                {"C": {"item": "minecraft:carved_pumpkin"}, "I": {"item": "minecraft:iron_block"},
                 "W": {"item": f"{NS}:wood_wand"}}, [{"item": "minecraft:iron_block"}]))
@@ -1032,6 +1050,14 @@ def main(assets):
         f.write(f"export const FORMS = {json.dumps(FORMS)};\n")
         f.write(f"export const TOUGHNESS = {json.dumps({n: m['tough'] for n, m in MATERIALS.items() if m.get('tough')})};\n")
         f.write(f"export const DROPS = {json.dumps(drops)};\n")
+        # Wand recipes in words, for the in-game guide: the wand each is made from, the
+        # item around it and how many.
+        recipes = {n: {"from": (LADDER[LADDER.index(n) - 1] if m["tier"] else m.get("from", "wood")),
+                       "item": CRAFT_NAMES.get(m["craft"], m["craft"].replace("_", " ")), "count": m.get("count", 4)}
+                   for n, m in MATERIALS.items() if m["craft"]}
+        f.write(f"export const RECIPES = {json.dumps(recipes)};\n")
+        f.write(f"export const NAMES = {json.dumps({n: m['name'] for n, m in MATERIALS.items()})};\n")
+        f.write(f"export const TWISTS = {json.dumps({n: m['twist'] for n, m in MATERIALS.items() if m.get('twist')})};\n")
     print("generated from", assets)
 
 

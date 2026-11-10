@@ -52,6 +52,9 @@
     },
     "golemgun_debug_wand": {
       "textures": "textures/items/golemgun/debug_wand"
+    },
+    "golemgun_guide": {
+      "textures": "textures/items/golemgun/guide"
     }
   }
 }
